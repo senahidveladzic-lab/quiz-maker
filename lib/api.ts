@@ -81,6 +81,18 @@ export const api = {
     if (!response.ok) throw new Error("Failed to create question");
     return response.json();
   },
+  updateQuestion: async (
+    id: string,
+    data: Partial<QuestionCreateDto>,
+  ): Promise<Question> => {
+    const response = await fetch(`${API_BASE_URL}/questions/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error("Failed to update question");
+    return response.json();
+  },
 };
 
 // ============================================
@@ -185,6 +197,23 @@ export function useCreateQuestion() {
 
   return useMutation({
     mutationFn: api.createQuestion,
+    onSuccess: () => {
+      // Invalidate questions list
+      queryClient.invalidateQueries({ queryKey: queryKeys.questions });
+    },
+  });
+}
+export function useUpdateQuestion() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: Partial<QuestionCreateDto>;
+    }) => api.updateQuestion(id, data),
     onSuccess: () => {
       // Invalidate questions list
       queryClient.invalidateQueries({ queryKey: queryKeys.questions });

@@ -1,19 +1,20 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { QuizzesTable } from "@/components/quizzes/quizzes-table";
 
-
 export default function Home() {
+  const router = useRouter();
+
   const handleCreateQuiz = () => {
-    // TODO: Implement create quiz functionality
-    console.log("Create new quiz");
+    router.push("/quizzes/create");
   };
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto py-10">
+      <div className="container mx-auto py-10 px-4">
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-4xl font-bold tracking-tight">Quiz Maker</h1>

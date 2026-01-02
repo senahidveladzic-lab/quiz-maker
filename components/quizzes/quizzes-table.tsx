@@ -14,12 +14,12 @@ import { Pencil, Trash2, Play } from "lucide-react";
 import { useDeleteQuiz, useQuizzes } from "@/lib/api";
 import { Quiz } from "@/lib/types";
 import { ReusableDialog } from "@/components/common/reusable-dialog";
-
+import { useRouter } from "next/navigation";
 
 export function QuizzesTable() {
   const { data: quizzes, isLoading, error } = useQuizzes();
   const deleteQuizMutation = useDeleteQuiz();
-
+  const router = useRouter();
   const [deleteDialog, setDeleteDialog] = useState<{
     open: boolean;
     quiz: Quiz | null;
@@ -44,8 +44,7 @@ export function QuizzesTable() {
   };
 
   const handleEditClick = (quiz: Quiz) => {
-    // TODO: Implement edit functionality
-    console.log("Edit quiz:", quiz);
+    router.push(`/quizzes/${quiz.id}/edit`);
   };
 
   const handleViewClick = (quiz: Quiz) => {
