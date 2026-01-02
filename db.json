@@ -1,0 +1,58 @@
+{
+  "quizzes": [
+    {
+      "id": "1",
+      "name": "JavaScript Basics Quiz",
+      "questionIds": ["1", "2", "3"],
+      "createdAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "2",
+      "name": "React Fundamentals",
+      "questionIds": ["4", "5"],
+      "createdAt": "2024-01-02T00:00:00Z"
+    }
+  ],
+  "questions": [
+    {
+      "id": "1",
+      "text": "What is a closure in JavaScript?",
+      "answer": "A closure is a function that has access to variables in its outer (enclosing) scope, even after the outer function has returned."
+    },
+    {
+      "id": "2",
+      "text": "Explain hoisting in JavaScript",
+      "answer": "Hoisting is JavaScript's default behavior of moving declarations to the top of the current scope before code execution."
+    },
+    {
+      "id": "3",
+      "text": "What is the difference between == and === in JavaScript?",
+      "answer": "== compares values with type coercion, while === compares both value and type without coercion (strict equality)."
+    },
+    {
+      "id": "4",
+      "text": "What is JSX?",
+      "answer": "JSX is a syntax extension for JavaScript that allows writing HTML-like code in JavaScript files. It gets transpiled to React.createElement() calls."
+    },
+    {
+      "id": "5",
+      "text": "What are React Hooks?",
+      "answer": "Hooks are functions that let you use state and other React features in functional components without writing a class."
+    },
+    {
+      "id": "6",
+      "text": "What is the Virtual DOM?",
+      "answer": "The Virtual DOM is a lightweight copy of the actual DOM that React uses to optimize rendering by comparing changes before updating the real DOM."
+    },
+    {
+      "id": "7",
+      "text": "Explain event delegation in JavaScript",
+      "answer": "Event delegation is a technique where you attach a single event listener to a parent element instead of multiple listeners to child elements, taking advantage of event bubbling."
+    },
+    {
+      "id": "8",
+      "text": "What is the purpose of useEffect hook?",
+      "answer": "useEffect is used to perform side effects in functional components, such as data fetching, subscriptions, or manually changing the DOM."
+    }
+  ]
+}
