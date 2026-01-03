@@ -67,11 +67,6 @@ export const api = {
     return response.json();
   },
 
-  getQuestionsByIds: async (ids: string[]): Promise<Question[]> => {
-    const questions = await api.getQuestions();
-    return questions.filter((q) => ids.includes(q.id));
-  },
-
   createQuestion: async (data: QuestionCreateDto): Promise<Question> => {
     const response = await fetch(`${API_BASE_URL}/questions`, {
       method: "POST",
@@ -186,8 +181,18 @@ export function useQuestion(id: string) {
 
 export function useQuestionsByIds(ids: string[]) {
   return useQuery({
-    queryKey: queryKeys.quizQuestions(ids),
-    queryFn: () => api.getQuestionsByIds(ids),
+    queryKey: [...queryKeys.questions, "byIds", ids],
+    queryFn: async () => {
+      if (ids.length === 0) return [];
+
+      const questions = await api.getQuestions();
+
+      const orderedQuestions = ids
+        .map((id) => questions.find((q) => q.id === id))
+        .filter((q): q is Question => q !== undefined);
+
+      return orderedQuestions;
+    },
     enabled: ids.length > 0,
   });
 }

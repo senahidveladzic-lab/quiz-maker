@@ -48,16 +48,7 @@ export function QuizzesTable() {
   };
 
   const handleViewClick = (quiz: Quiz) => {
-    // TODO: Implement view/solve functionality
-    console.log("View quiz:", quiz);
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
+    router.push(`/quizzes/${quiz.id}/play`);
   };
 
   if (isLoading) {
@@ -87,7 +78,6 @@ export function QuizzesTable() {
           <TableHeader>
             <TableRow>
               <TableHead>Quiz Name</TableHead>
-              <TableHead>Created Date</TableHead>
               <TableHead className="text-center">Questions</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
@@ -100,7 +90,6 @@ export function QuizzesTable() {
                 onClick={() => handleEditClick(quiz)}
               >
                 <TableCell className="font-medium">{quiz.name}</TableCell>
-                <TableCell>{formatDate(quiz.createdAt)}</TableCell>
                 <TableCell className="text-center">
                   {quiz.questionIds.length}
                 </TableCell>
