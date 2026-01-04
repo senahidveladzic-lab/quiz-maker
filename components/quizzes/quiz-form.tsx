@@ -33,17 +33,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import { QuizQuestion, UseQuizFormReturn, EditDialogProps } from "@/lib/types";
+import { QuizQuestion, UseQuizFormReturn } from "@/lib/types";
 import { QuestionCard } from "./question-card";
 import { QuestionAutocomplete } from "./question-autocomplete";
-import { QuestionEditDialog } from "./question-edit-dialog";
+import { ReusableDialog } from "@/components/common/reusable-dialog";
 
 interface QuizFormProps {
   title: string;
   description: string;
   submitText: string;
   formData: UseQuizFormReturn;
-  editDialogProps?: EditDialogProps;
 }
 
 interface SortableQuestionProps {
@@ -52,7 +51,6 @@ interface SortableQuestionProps {
   control: UseQuizFormReturn["form"]["control"];
   onRemove: (tempId: string) => void;
   onToggleCollapse: (tempId: string) => void;
-  onBlur?: (tempId: string) => void;
 }
 
 function SortableQuestion({
@@ -61,7 +59,6 @@ function SortableQuestion({
   control,
   onRemove,
   onToggleCollapse,
-  onBlur,
 }: SortableQuestionProps) {
   const {
     attributes,
@@ -85,13 +82,11 @@ function SortableQuestion({
         control={control}
         onRemove={onRemove}
         namePrefix="questions"
-        questionType={question.type}
         isCollapsed={question.isCollapsed}
         onToggleCollapse={onToggleCollapse}
         tempId={question.tempId}
         questionText={question.text}
         dragHandleProps={{ ...attributes, ...listeners }}
-        onBlur={onBlur}
       />
     </div>
   );
@@ -102,7 +97,6 @@ export function QuizForm({
   description,
   submitText,
   formData,
-  editDialogProps,
 }: QuizFormProps) {
   const router = useRouter();
   const {
@@ -115,10 +109,12 @@ export function QuizForm({
     onSubmit,
     addNewQuestion,
     removeQuestion,
+    confirmRemoveQuestion,
     addRecycledQuestion,
     toggleCollapse,
     reorderQuestions,
-    checkQuestionModified,
+    deleteQuestionDialog,
+    setDeleteQuestionDialog,
   } = formData;
 
   const sensors = useSensors(
@@ -138,6 +134,12 @@ export function QuizForm({
       const newOrder = arrayMove(questions, oldIndex, newIndex);
       reorderQuestions(newOrder);
     }
+  };
+
+  const getQuestionPreview = (question: QuizQuestion | null): string => {
+    if (!question) return "";
+    const text = question.text || "Empty question";
+    return text.length > 50 ? text.substring(0, 50) + "..." : text;
   };
 
   return (
@@ -162,7 +164,7 @@ export function QuizForm({
             {/* Quiz Name */}
             <Card>
               <CardHeader>
-                <CardTitle>Quiz Details</CardTitle>
+                <CardTitle>Quiz Name</CardTitle>
               </CardHeader>
               <CardContent>
                 <FormField
@@ -170,7 +172,6 @@ export function QuizForm({
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Quiz Name</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="e.g., JavaScript Basics Quiz"
@@ -184,6 +185,29 @@ export function QuizForm({
                     </FormItem>
                   )}
                 />
+              </CardContent>
+            </Card>
+
+            {/* Autocomplete for Recycling Questions */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Recycle Existing Questions</CardTitle>
+                <FormDescription>
+                  Select questions from previous quizzes to include in this one
+                </FormDescription>
+              </CardHeader>
+              <CardContent>
+                {availableQuestions.length === 0 && !isLoadingQuestions ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    No existing questions available to recycle.
+                  </div>
+                ) : (
+                  <QuestionAutocomplete
+                    availableQuestions={availableQuestions}
+                    onSelect={addRecycledQuestion}
+                    isLoading={isLoadingQuestions}
+                  />
+                )}
               </CardContent>
             </Card>
 
@@ -228,37 +252,11 @@ export function QuizForm({
                             control={form.control}
                             onRemove={removeQuestion}
                             onToggleCollapse={toggleCollapse}
-                            onBlur={checkQuestionModified}
                           />
                         ))}
                       </div>
                     </SortableContext>
                   </DndContext>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Autocomplete for Recycling Questions */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Recycle Existing Questions</CardTitle>
-                <FormDescription>
-                  Select questions from {editDialogProps ? "other" : "previous"}{" "}
-                  quizzes to include in this one
-                </FormDescription>
-              </CardHeader>
-              <CardContent>
-                {availableQuestions.length === 0 && !isLoadingQuestions ? (
-                  <div className="text-center py-8 text-muted-foreground">
-                    No {editDialogProps ? "other" : "existing"} questions
-                    available to recycle.
-                  </div>
-                ) : (
-                  <QuestionAutocomplete
-                    availableQuestions={availableQuestions}
-                    onSelect={addRecycledQuestion}
-                    isLoading={isLoadingQuestions}
-                  />
                 )}
               </CardContent>
             </Card>
@@ -299,21 +297,23 @@ export function QuizForm({
           </form>
         </Form>
 
-        {/* Edit Strategy Dialog */}
-        {editDialogProps && (
-          <QuestionEditDialog
-            open={editDialogProps.editStrategyDialog.open}
-            onOpenChange={(open) =>
-              editDialogProps.setEditStrategyDialog((prev) => ({
-                ...prev,
-                open,
-              }))
-            }
-            onUpdateGlobally={editDialogProps.handleUpdateGlobally}
-            onCreateNew={editDialogProps.handleCreateNewVersion}
-            questionText={editDialogProps.editStrategyDialog.questionText}
-          />
-        )}
+        <ReusableDialog
+          open={deleteQuestionDialog.open}
+          onOpenChange={(open) =>
+            setDeleteQuestionDialog({
+              open,
+              questionToDelete: open
+                ? deleteQuestionDialog.questionToDelete
+                : null,
+            })
+          }
+          variant="danger"
+          title="Delete Question"
+          description={`Are you sure you want to delete "${getQuestionPreview(deleteQuestionDialog.questionToDelete)}"?`}
+          confirmText="Delete"
+          cancelText="Cancel"
+          onConfirm={confirmRemoveQuestion}
+        />
       </div>
     </div>
   );

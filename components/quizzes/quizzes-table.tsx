@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   Table,
   TableBody,
@@ -11,45 +10,22 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2, Play } from "lucide-react";
-import { useDeleteQuiz, useQuizzes } from "@/lib/api";
-import { Quiz } from "@/lib/types";
 import { ReusableDialog } from "@/components/common/reusable-dialog";
-import { useRouter } from "next/navigation";
+import { useQuizzesTable } from "@/hooks/facade/use-quizzes-table";
 
 export function QuizzesTable() {
-  const { data: quizzes, isLoading, error } = useQuizzes();
-  const deleteQuizMutation = useDeleteQuiz();
-  const router = useRouter();
-  const [deleteDialog, setDeleteDialog] = useState<{
-    open: boolean;
-    quiz: Quiz | null;
-  }>({
-    open: false,
-    quiz: null,
-  });
-
-  const handleDeleteClick = (quiz: Quiz) => {
-    setDeleteDialog({ open: true, quiz });
-  };
-
-  const handleDeleteConfirm = async () => {
-    if (!deleteDialog.quiz) return;
-
-    try {
-      await deleteQuizMutation.mutateAsync(deleteDialog.quiz.id);
-      setDeleteDialog({ open: false, quiz: null });
-    } catch (error) {
-      console.error("Failed to delete quiz:", error);
-    }
-  };
-
-  const handleEditClick = (quiz: Quiz) => {
-    router.push(`/quizzes/${quiz.id}/edit`);
-  };
-
-  const handleViewClick = (quiz: Quiz) => {
-    router.push(`/quizzes/${quiz.id}/play`);
-  };
+  const {
+    quizzes,
+    isLoading,
+    error,
+    deleteDialog,
+    setDeleteDialog,
+    isDeleting,
+    handleDeleteClick,
+    handleDeleteConfirm,
+    handleEditClick,
+    handleViewClick,
+  } = useQuizzesTable();
 
   if (isLoading) {
     return <div className="text-center py-8">Loading quizzes...</div>;
@@ -91,7 +67,7 @@ export function QuizzesTable() {
               >
                 <TableCell className="font-medium">{quiz.name}</TableCell>
                 <TableCell className="text-center">
-                  {quiz.questionIds.length}
+                  {quiz.questions?.length}
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
@@ -105,17 +81,6 @@ export function QuizzesTable() {
                       title="View Quiz"
                     >
                       <Play className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleEditClick(quiz);
-                      }}
-                      title="Edit Quiz"
-                    >
-                      <Pencil className="h-4 w-4" />
                     </Button>
                     <Button
                       variant="ghost"
@@ -148,7 +113,7 @@ export function QuizzesTable() {
         confirmText="Delete"
         cancelText="Cancel"
         onConfirm={handleDeleteConfirm}
-        isLoading={deleteQuizMutation.isPending}
+        isLoading={isDeleting}
       />
     </>
   );

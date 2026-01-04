@@ -44,7 +44,7 @@ export function QuestionAutocomplete({
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-full p-0" align="start">
+      <PopoverContent className="p-0 w-full max-w-3xl" align="start">
         <Command>
           <CommandInput placeholder="Search questions..." />
           <CommandList>

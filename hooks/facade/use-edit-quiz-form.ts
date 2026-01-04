@@ -1,31 +1,24 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { useEffect, useState } from "react";
 import { z } from "zod";
 
 import {
   useQuiz,
-  useQuestionsByIds,
   useUpdateQuiz,
-  useCreateQuestion,
-  useUpdateQuestion,
   useQuestions,
   useQuizzes,
-} from "@/lib/api";
+} from "@/lib/api/quiz-api";
 import {
   Question,
   QuizQuestion,
   QuizFormData,
   UseEditQuizFormReturn,
 } from "@/lib/types";
-
-// ============================================
-// Remove the duplicate interface definition here
-// ============================================
 
 // ============================================
 // Schema
@@ -43,12 +36,8 @@ const editQuizSchema = z
         id: z.string().optional(),
         text: z.string().min(1, "Question text is required").min(5),
         answer: z.string().min(1, "Answer is required").min(3),
-        type: z.enum(["existing", "new", "recycled"]),
         isCollapsed: z.boolean(),
         tempId: z.string(),
-        originalText: z.string().optional(),
-        originalAnswer: z.string().optional(),
-        willUpdateGlobally: z.boolean().optional(),
       }),
     ),
   })
@@ -64,23 +53,18 @@ const editQuizSchema = z
 export function useEditQuizForm(quizId: string): UseEditQuizFormReturn {
   const router = useRouter();
   const { data: quiz, isLoading: loadingQuiz } = useQuiz(quizId);
-  const { data: quizQuestions } = useQuestionsByIds(quiz?.questionIds || []);
   const { data: allQuestions = [], isLoading: loadingQuestions } =
     useQuestions();
   const { data: existingQuizzes } = useQuizzes();
 
   const updateQuizMutation = useUpdateQuiz();
-  const createQuestionMutation = useCreateQuestion();
-  const updateQuestionMutation = useUpdateQuestion();
 
-  const [editStrategyDialog, setEditStrategyDialog] = useState<{
+  const [deleteQuestionDialog, setDeleteQuestionDialog] = useState<{
     open: boolean;
-    questionTempId: string | null;
-    questionText: string;
+    questionToDelete: QuizQuestion | null;
   }>({
     open: false,
-    questionTempId: null,
-    questionText: "",
+    questionToDelete: null,
   });
 
   const form = useForm<QuizFormData>({
@@ -91,19 +75,14 @@ export function useEditQuizForm(quizId: string): UseEditQuizFormReturn {
     },
   });
 
-  // Load quiz data into form
   useEffect(() => {
-    if (quiz && quizQuestions) {
-      const existingQuestions: QuizQuestion[] = quizQuestions.map((q) => ({
+    if (quiz && quiz.questions) {
+      const existingQuestions: QuizQuestion[] = quiz.questions.map((q) => ({
         id: q.id,
         text: q.text,
         answer: q.answer,
-        type: "existing",
         isCollapsed: true,
         tempId: `existing-${q.id}-${Date.now()}`,
-        originalText: q.text,
-        originalAnswer: q.answer,
-        willUpdateGlobally: false,
       }));
 
       form.reset({
@@ -111,53 +90,70 @@ export function useEditQuizForm(quizId: string): UseEditQuizFormReturn {
         questions: existingQuestions,
       });
     }
-  }, [quiz, quizQuestions, form]);
+  }, [quiz, form]);
 
   const questions = form.watch("questions");
 
-  // Get available questions (exclude already used ones)
   const availableQuestions = allQuestions.filter(
     (q) => !questions.some((qq) => qq.id === q.id),
   );
 
-  const addNewQuestion = () => {
+  const addNewQuestion = (): void => {
     const current = form.getValues("questions");
     const newQuestion: QuizQuestion = {
       text: "",
       answer: "",
-      type: "new",
       isCollapsed: false,
       tempId: `new-${Date.now()}-${Math.random()}`,
     };
     form.setValue("questions", [...current, newQuestion]);
   };
 
-  const removeQuestion = (tempId: string) => {
+  const removeQuestion = (tempId: string): void => {
+    const current = form.getValues("questions");
+    const questionToDelete = current.find((q) => q.tempId === tempId);
+
+    if (questionToDelete) {
+      setDeleteQuestionDialog({
+        open: true,
+        questionToDelete,
+      });
+    }
+  };
+
+  const confirmRemoveQuestion = (): void => {
+    if (!deleteQuestionDialog.questionToDelete) return;
+
     const current = form.getValues("questions");
     form.setValue(
       "questions",
-      current.filter((q) => q.tempId !== tempId),
+      current.filter(
+        (q) => q.tempId !== deleteQuestionDialog.questionToDelete?.tempId,
+      ),
     );
+
+    setDeleteQuestionDialog({
+      open: false,
+      questionToDelete: null,
+    });
   };
 
-  const addRecycledQuestion = (question: Question) => {
+  const addRecycledQuestion = (question: Question): void => {
     const current = form.getValues("questions");
     if (current.some((q) => q.id === question.id)) {
       return;
     }
 
     const recycledQuestion: QuizQuestion = {
-      id: question.id,
       text: question.text,
       answer: question.answer,
-      type: "recycled",
       isCollapsed: true,
       tempId: `recycled-${question.id}-${Date.now()}`,
     };
     form.setValue("questions", [...current, recycledQuestion]);
   };
 
-  const toggleCollapse = (tempId: string) => {
+  const toggleCollapse = (tempId: string): void => {
     const current = form.getValues("questions");
     const updated = current.map((q) =>
       q.tempId === tempId ? { ...q, isCollapsed: !q.isCollapsed } : q,
@@ -165,77 +161,11 @@ export function useEditQuizForm(quizId: string): UseEditQuizFormReturn {
     form.setValue("questions", updated);
   };
 
-  const reorderQuestions = (newOrder: QuizQuestion[]) => {
+  const reorderQuestions = (newOrder: QuizQuestion[]): void => {
     form.setValue("questions", newOrder);
   };
 
-  const checkQuestionModified = (tempId: string) => {
-    const current = form.getValues("questions");
-    const question = current.find((q) => q.tempId === tempId);
-
-    if (!question || question.type !== "existing") return;
-
-    const isModified =
-      question.text !== question.originalText ||
-      question.answer !== question.originalAnswer;
-
-    if (isModified && !question.willUpdateGlobally) {
-      setEditStrategyDialog({
-        open: true,
-        questionTempId: tempId,
-        questionText: question.originalText || "",
-      });
-    }
-  };
-
-  const handleUpdateGlobally = () => {
-    if (!editStrategyDialog.questionTempId) return;
-
-    const current = form.getValues("questions");
-    const updated = current.map((q) =>
-      q.tempId === editStrategyDialog.questionTempId
-        ? { ...q, willUpdateGlobally: true }
-        : q,
-    );
-    form.setValue("questions", updated);
-    setEditStrategyDialog({
-      open: false,
-      questionTempId: null,
-      questionText: "",
-    });
-  };
-
-  const handleCreateNewVersion = () => {
-    if (!editStrategyDialog.questionTempId) return;
-
-    const current = form.getValues("questions");
-    const questionIndex = current.findIndex(
-      (q) => q.tempId === editStrategyDialog.questionTempId,
-    );
-
-    if (questionIndex === -1) return;
-
-    const question = current[questionIndex];
-
-    const updatedQuestions = [...current];
-    updatedQuestions[questionIndex] = {
-      ...question,
-      type: "new",
-      id: undefined,
-      originalText: undefined,
-      originalAnswer: undefined,
-      willUpdateGlobally: undefined,
-    };
-
-    form.setValue("questions", updatedQuestions);
-    setEditStrategyDialog({
-      open: false,
-      questionTempId: null,
-      questionText: "",
-    });
-  };
-
-  const onSubmit = async (data: QuizFormData) => {
+  const onSubmit = async (data: QuizFormData): Promise<void> => {
     const isDuplicate = existingQuizzes?.some(
       (q) =>
         q.id !== quizId && q.name.toLowerCase() === data.name.toLowerCase(),
@@ -250,37 +180,17 @@ export function useEditQuizForm(quizId: string): UseEditQuizFormReturn {
     }
 
     try {
-      const finalQuestionIds: string[] = [];
-
-      for (const question of data.questions) {
-        if (question.type === "existing") {
-          if (question.willUpdateGlobally && question.id) {
-            await updateQuestionMutation.mutateAsync({
-              id: question.id,
-              data: { text: question.text, answer: question.answer },
-            });
-          }
-          if (question.id) {
-            finalQuestionIds.push(question.id);
-          }
-        } else if (question.type === "new") {
-          const created = await createQuestionMutation.mutateAsync({
-            text: question.text,
-            answer: question.answer,
-          });
-          finalQuestionIds.push(created.id);
-        } else if (question.type === "recycled") {
-          if (question.id) {
-            finalQuestionIds.push(question.id);
-          }
-        }
-      }
+      const finalQuestions: Question[] = data.questions.map((q, index) => ({
+        id: q.id || `q-${Date.now()}-${index}`,
+        text: q.text,
+        answer: q.answer,
+      }));
 
       await updateQuizMutation.mutateAsync({
         id: quizId,
         data: {
           name: data.name,
-          questionIds: finalQuestionIds,
+          questions: finalQuestions,
         },
       });
 
@@ -292,11 +202,7 @@ export function useEditQuizForm(quizId: string): UseEditQuizFormReturn {
     }
   };
 
-  const isSubmitting =
-    updateQuizMutation.isPending ||
-    createQuestionMutation.isPending ||
-    updateQuestionMutation.isPending;
-
+  const isSubmitting = updateQuizMutation.isPending;
   const totalQuestions = questions.length;
   const quizNotFound = !loadingQuiz && !quiz;
 
@@ -310,15 +216,13 @@ export function useEditQuizForm(quizId: string): UseEditQuizFormReturn {
     onSubmit,
     addNewQuestion,
     removeQuestion,
+    confirmRemoveQuestion,
     addRecycledQuestion,
     toggleCollapse,
     reorderQuestions,
-    checkQuestionModified,
+    deleteQuestionDialog,
+    setDeleteQuestionDialog,
     isLoadingQuiz: loadingQuiz,
     quizNotFound,
-    editStrategyDialog,
-    setEditStrategyDialog,
-    handleUpdateGlobally,
-    handleCreateNewVersion,
   };
 }

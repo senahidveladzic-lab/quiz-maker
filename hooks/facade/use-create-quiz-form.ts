@@ -1,17 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import {
-  useCreateQuiz,
-  useCreateQuestion,
-  useQuestions,
-  useQuizzes,
-} from "@/lib/api";
+import { useCreateQuiz, useQuestions, useQuizzes } from "@/lib/api/quiz-api";
 import {
   Question,
   QuizQuestion,
@@ -41,12 +37,8 @@ const createQuizSchema = z
           .string()
           .min(1, "Answer is required")
           .min(3, "Answer must be at least 3 characters"),
-        type: z.enum(["existing", "new", "recycled"]),
         isCollapsed: z.boolean(),
         tempId: z.string(),
-        originalText: z.string().optional(),
-        originalAnswer: z.string().optional(),
-        willUpdateGlobally: z.boolean().optional(),
       }),
     ),
   })
@@ -62,10 +54,17 @@ const createQuizSchema = z
 export function useCreateQuizForm(): UseQuizFormReturn {
   const router = useRouter();
   const createQuizMutation = useCreateQuiz();
-  const createQuestionMutation = useCreateQuestion();
   const { data: allQuestions = [], isLoading: loadingQuestions } =
     useQuestions();
   const { data: existingQuizzes } = useQuizzes();
+
+  const [deleteQuestionDialog, setDeleteQuestionDialog] = useState<{
+    open: boolean;
+    questionToDelete: QuizQuestion | null;
+  }>({
+    open: false,
+    questionToDelete: null,
+  });
 
   const form = useForm<QuizFormData>({
     resolver: zodResolver(createQuizSchema),
@@ -77,49 +76,66 @@ export function useCreateQuizForm(): UseQuizFormReturn {
 
   const questions = form.watch("questions");
 
-  // Filter out already selected questions
   const availableQuestions = allQuestions.filter(
     (q) => !questions.some((qq) => qq.id === q.id),
   );
 
-  const addNewQuestion = () => {
+  const addNewQuestion = (): void => {
     const current = form.getValues("questions");
     const newQuestion: QuizQuestion = {
       text: "",
       answer: "",
-      type: "new",
       isCollapsed: false,
       tempId: `new-${Date.now()}-${Math.random()}`,
     };
     form.setValue("questions", [...current, newQuestion]);
   };
 
-  const removeQuestion = (tempId: string) => {
+  const removeQuestion = (tempId: string): void => {
+    const current = form.getValues("questions");
+    const questionToDelete = current.find((q) => q.tempId === tempId);
+
+    if (questionToDelete) {
+      setDeleteQuestionDialog({
+        open: true,
+        questionToDelete,
+      });
+    }
+  };
+
+  const confirmRemoveQuestion = (): void => {
+    if (!deleteQuestionDialog.questionToDelete) return;
+
     const current = form.getValues("questions");
     form.setValue(
       "questions",
-      current.filter((q) => q.tempId !== tempId),
+      current.filter(
+        (q) => q.tempId !== deleteQuestionDialog.questionToDelete?.tempId,
+      ),
     );
+
+    setDeleteQuestionDialog({
+      open: false,
+      questionToDelete: null,
+    });
   };
 
-  const addRecycledQuestion = (question: Question) => {
+  const addRecycledQuestion = (question: Question): void => {
     const current = form.getValues("questions");
     if (current.some((q) => q.id === question.id)) {
       return;
     }
 
     const recycledQuestion: QuizQuestion = {
-      id: question.id,
       text: question.text,
       answer: question.answer,
-      type: "recycled",
       isCollapsed: true,
       tempId: `recycled-${question.id}-${Date.now()}`,
     };
     form.setValue("questions", [...current, recycledQuestion]);
   };
 
-  const toggleCollapse = (tempId: string) => {
+  const toggleCollapse = (tempId: string): void => {
     const current = form.getValues("questions");
     const updated = current.map((q) =>
       q.tempId === tempId ? { ...q, isCollapsed: !q.isCollapsed } : q,
@@ -127,12 +143,11 @@ export function useCreateQuizForm(): UseQuizFormReturn {
     form.setValue("questions", updated);
   };
 
-  const reorderQuestions = (newOrder: QuizQuestion[]) => {
+  const reorderQuestions = (newOrder: QuizQuestion[]): void => {
     form.setValue("questions", newOrder);
   };
 
-  const onSubmit = async (data: QuizFormData) => {
-    // Check for duplicate quiz name
+  const onSubmit = async (data: QuizFormData): Promise<void> => {
     const isDuplicate = existingQuizzes?.some(
       (quiz) => quiz.name.toLowerCase() === data.name.toLowerCase(),
     );
@@ -146,29 +161,15 @@ export function useCreateQuizForm(): UseQuizFormReturn {
     }
 
     try {
-      const finalQuestionIds: string[] = [];
+      const finalQuestions: Question[] = data.questions.map((q, index) => ({
+        id: q.id || `q-${Date.now()}-${index}`,
+        text: q.text,
+        answer: q.answer,
+      }));
 
-      // Process questions in order
-      for (const question of data.questions) {
-        if (question.type === "new") {
-          // Create new question
-          const created = await createQuestionMutation.mutateAsync({
-            text: question.text,
-            answer: question.answer,
-          });
-          finalQuestionIds.push(created.id);
-        } else if (question.type === "recycled") {
-          // Use existing question ID
-          if (question.id) {
-            finalQuestionIds.push(question.id);
-          }
-        }
-      }
-
-      // Create the quiz
       await createQuizMutation.mutateAsync({
         name: data.name,
-        questionIds: finalQuestionIds,
+        questions: finalQuestions,
       });
 
       toast.success("Quiz created successfully!");
@@ -179,9 +180,7 @@ export function useCreateQuizForm(): UseQuizFormReturn {
     }
   };
 
-  const isSubmitting =
-    createQuizMutation.isPending || createQuestionMutation.isPending;
-
+  const isSubmitting = createQuizMutation.isPending;
   const totalQuestions = questions.length;
 
   return {
@@ -194,8 +193,11 @@ export function useCreateQuizForm(): UseQuizFormReturn {
     onSubmit,
     addNewQuestion,
     removeQuestion,
+    confirmRemoveQuestion,
     addRecycledQuestion,
     toggleCollapse,
     reorderQuestions,
+    deleteQuestionDialog,
+    setDeleteQuestionDialog,
   };
 }

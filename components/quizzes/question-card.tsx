@@ -11,22 +11,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
 import { Control } from "react-hook-form";
-import { cn } from "@/lib/utils";
 
 interface QuestionCardProps {
   index: number;
   control: Control<any>;
   onRemove: (tempId: string) => void;
   namePrefix: string;
-  questionType: "existing" | "new" | "recycled";
   isCollapsed: boolean;
   onToggleCollapse: (tempId: string) => void;
   tempId: string;
   questionText: string;
   dragHandleProps?: any;
-  onBlur?: (tempId: string) => void;
 }
 
 export function QuestionCard({
@@ -34,23 +30,19 @@ export function QuestionCard({
   control,
   onRemove,
   namePrefix,
-  questionType,
   isCollapsed,
   onToggleCollapse,
   tempId,
   questionText,
   dragHandleProps,
-  onBlur,
 }: QuestionCardProps) {
   const truncateText = (text: string, maxLength: number = 60) => {
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + "...";
   };
 
-  const isReadOnly = questionType === "recycled";
-
   return (
-    <Card className={cn("border-2", isReadOnly && "bg-muted/30")}>
+    <Card className="border-2">
       <CardHeader className="pb-3">
         <div className="flex items-center gap-2">
           {/* Drag Handle */}
@@ -62,12 +54,7 @@ export function QuestionCard({
           </div>
 
           <div className="flex-1 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <CardTitle className="text-lg">Question {index + 1}</CardTitle>
-              {questionType === "recycled" && (
-                <Badge variant="secondary">Recycled</Badge>
-              )}
-            </div>
+            <CardTitle className="text-lg">Question {index + 1}</CardTitle>
 
             <div className="flex items-center gap-2">
               <Button
@@ -117,13 +104,6 @@ export function QuestionCard({
                     className="resize-none"
                     rows={3}
                     {...field}
-                    disabled={isReadOnly}
-                    onBlur={() => {
-                      field.onBlur();
-                      if (onBlur && questionType === "existing") {
-                        onBlur(tempId);
-                      }
-                    }}
                   />
                 </FormControl>
                 <FormMessage />
@@ -143,13 +123,6 @@ export function QuestionCard({
                     className="resize-none"
                     rows={3}
                     {...field}
-                    disabled={isReadOnly}
-                    onBlur={() => {
-                      field.onBlur();
-                      if (onBlur && questionType === "existing") {
-                        onBlur(tempId);
-                      }
-                    }}
                   />
                 </FormControl>
                 <FormMessage />

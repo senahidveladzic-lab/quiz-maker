@@ -38,12 +38,6 @@ export default function EditQuizPage() {
       description="Update your quiz name and questions"
       submitText="Update Quiz"
       formData={formData}
-      editDialogProps={{
-        editStrategyDialog: formData.editStrategyDialog,
-        setEditStrategyDialog: formData.setEditStrategyDialog,
-        handleUpdateGlobally: formData.handleUpdateGlobally,
-        handleCreateNewVersion: formData.handleCreateNewVersion,
-      }}
     />
   );
 }

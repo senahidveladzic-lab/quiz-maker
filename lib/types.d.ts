@@ -1,4 +1,5 @@
 import { UseFormReturn } from "react-hook-form";
+
 export interface Question {
   id: string;
   text: string;
@@ -8,13 +9,12 @@ export interface Question {
 export interface Quiz {
   id: string;
   name: string;
-  questionIds: string[];
-  createdAt: string;
+  questions: Question[];
 }
 
 export interface QuizCreateDto {
   name: string;
-  questionIds: string[];
+  questions: Question[];
 }
 
 export interface QuestionCreateDto {
@@ -22,24 +22,24 @@ export interface QuestionCreateDto {
   answer: string;
 }
 
+export interface QuizWithQuestions extends Quiz {
+  questions: Question[];
+}
+
 // ============================================
-// Quiz Question Type (for form state)
+// Quiz Question Type
 // ============================================
 
 export interface QuizQuestion {
   id?: string;
   text: string;
   answer: string;
-  type: "existing" | "new" | "recycled";
   isCollapsed: boolean;
   tempId: string;
-  originalText?: string;
-  originalAnswer?: string;
-  willUpdateGlobally?: boolean;
 }
 
 // ============================================
-// Form Data Structure (shared by create & edit)
+// Form Data Structure
 // ============================================
 
 export interface QuizFormData {
@@ -61,31 +61,20 @@ export interface UseQuizFormReturn {
   onSubmit: (data: QuizFormData) => Promise<void>;
   addNewQuestion: () => void;
   removeQuestion: (tempId: string) => void;
+  confirmRemoveQuestion: () => void;
   addRecycledQuestion: (question: Question) => void;
   toggleCollapse: (tempId: string) => void;
   reorderQuestions: (newOrder: QuizQuestion[]) => void;
-  checkQuestionModified?: (tempId: string) => void;
-}
-
-// ============================================
-// Edit Dialog Props
-// ============================================
-
-export interface EditDialogProps {
-  editStrategyDialog: {
+  deleteQuestionDialog: {
     open: boolean;
-    questionTempId: string | null;
-    questionText: string;
+    questionToDelete: QuizQuestion | null;
   };
-  setEditStrategyDialog: React.Dispatch<
+  setDeleteQuestionDialog: React.Dispatch<
     React.SetStateAction<{
       open: boolean;
-      questionTempId: string | null;
-      questionText: string;
+      questionToDelete: QuizQuestion | null;
     }>
   >;
-  handleUpdateGlobally: () => void;
-  handleCreateNewVersion: () => void;
 }
 
 // ============================================
@@ -95,9 +84,4 @@ export interface EditDialogProps {
 export interface UseEditQuizFormReturn extends UseQuizFormReturn {
   isLoadingQuiz: boolean;
   quizNotFound: boolean;
-  checkQuestionModified: (tempId: string) => void;
-  editStrategyDialog: EditDialogProps["editStrategyDialog"];
-  setEditStrategyDialog: EditDialogProps["setEditStrategyDialog"];
-  handleUpdateGlobally: EditDialogProps["handleUpdateGlobally"];
-  handleCreateNewVersion: EditDialogProps["handleCreateNewVersion"];
 }
