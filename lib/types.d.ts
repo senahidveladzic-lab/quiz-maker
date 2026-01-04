@@ -76,12 +76,3 @@ export interface UseQuizFormReturn {
     }>
   >;
 }
-
-// ============================================
-// Extended Edit Hook Return Type
-// ============================================
-
-export interface UseEditQuizFormReturn extends UseQuizFormReturn {
-  isLoadingQuiz: boolean;
-  quizNotFound: boolean;
-}

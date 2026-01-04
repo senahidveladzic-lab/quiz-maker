@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { usePlayQuiz } from "@/hooks/facade/use-play-quiz";
+import { PageHeader } from "@/components/common/page-header";
 
 export default function PlayQuizPage() {
   const params = useParams();
@@ -59,33 +60,30 @@ export default function PlayQuizPage() {
   return (
     <section className="min-h-screen bg-background">
       <div className="container mx-auto py-6 px-4 max-w-4xl">
-        {/* Header */}
-        <div className="mb-6 flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">{quiz.name}</h1>
-            <p className="text-muted-foreground mt-1">
-              Question {currentIndex + 1} of {totalQuestions}
-            </p>
-          </div>
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={handleShare}
-              title="Share Quiz"
-            >
-              <Share2 className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              onClick={handleBackToQuizzes}
-              className="gap-2"
-            >
-              <Home className="h-4 w-4" />
-              <span className="hidden sm:inline">Back to Quizzes</span>
-            </Button>
-          </div>
-        </div>
+        <PageHeader
+          title={quiz.name}
+          description={`Question ${currentIndex + 1} of ${totalQuestions}`}
+          actions={
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={handleShare}
+                title="Share Quiz"
+              >
+                <Share2 className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                onClick={handleBackToQuizzes}
+                className="gap-2"
+              >
+                <Home className="h-4 w-4" />
+                <span className="hidden sm:inline">Back to Quizzes</span>
+              </Button>
+            </div>
+          }
+        />
 
         {/* Progress Bar */}
         <div className="mb-8">

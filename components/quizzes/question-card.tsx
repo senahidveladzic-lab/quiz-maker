@@ -92,7 +92,7 @@ export function QuestionCard({
       </CardHeader>
 
       {!isCollapsed && (
-        <CardContent className="space-y-4 pl-9">
+        <CardContent className="space-y-4">
           <FormField
             control={control}
             name={`${namePrefix}.${index}.text`}

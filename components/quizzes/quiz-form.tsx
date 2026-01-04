@@ -34,6 +34,7 @@ import { QuizQuestion, UseQuizFormReturn } from "@/lib/types";
 import { QuestionAutocomplete } from "./question-autocomplete";
 import { ReusableDialog } from "@/components/common/reusable-dialog";
 import { SortableQuestion } from "./sortable-question";
+import { PageHeader } from "@/components/common/page-header";
 
 interface QuizFormProps {
   title: string;
@@ -93,7 +94,7 @@ export function QuizForm({
   };
 
   return (
-    <section className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-32">
       <div className="container mx-auto py-10 max-w-4xl px-4">
         <Button
           variant="ghost"
@@ -104,14 +105,7 @@ export function QuizForm({
           Back to Quizzes
         </Button>
 
-        <div className="mb-8">
-          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight">
-            {title}
-          </h1>
-          <p className="text-sm sm:text-base text-muted-foreground mt-2">
-            {description}
-          </p>
-        </div>
+        <PageHeader title={title} description={description} />
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -164,6 +158,7 @@ export function QuizForm({
                 )}
               </CardContent>
             </Card>
+
             {/* Questions List */}
             <Card>
               <CardHeader>
@@ -180,7 +175,7 @@ export function QuizForm({
                   </Button>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-4 ">
                 {questions.length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
                     No questions added yet. Add a new question or recycle an
@@ -213,47 +208,6 @@ export function QuizForm({
                 )}
               </CardContent>
             </Card>
-
-            {/* Summary and Submit */}
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div className="space-y-1">
-                    <p className="text-sm font-medium">Total Questions</p>
-                    <p className="text-2xl font-bold">{totalQuestions}</p>
-                    {totalQuestions === 0 && (
-                      <p className="text-sm text-destructive">
-                        At least one question is required
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="flex gap-3">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="flex-1"
-                      onClick={() => router.push("/")}
-                      disabled={isSubmitting}
-                      size="lg"
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      type="submit"
-                      disabled={isSubmitting}
-                      size="lg"
-                      className="flex-1"
-                    >
-                      {isSubmitting && (
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      )}
-                      {submitText}
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </form>
         </Form>
 
@@ -275,6 +229,47 @@ export function QuizForm({
           onConfirm={confirmRemoveQuestion}
         />
       </div>
-    </section>
+
+      {/* Sticky Summary and Submit */}
+      <div className="fixed bottom-0 left-0 right-0 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-10">
+        <div className="container mx-auto max-w-4xl px-4 sm:py-4">
+          <Card className="border-0 shadow-none py-4 sm:py-6">
+            <CardContent className="p-0">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="space-y-1 flex sm:block gap-4 items-center">
+                  <p className="text-sm font-medium">Total Questions</p>
+                  <p className="text-2xl font-bold">{totalQuestions}</p>
+                </div>
+
+                <div className="flex gap-3">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="flex-1 sm:flex-initial"
+                    onClick={() => router.push("/")}
+                    disabled={isSubmitting}
+                    size="lg"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting || totalQuestions === 0}
+                    size="lg"
+                    className="flex-1 sm:flex-initial"
+                    onClick={form.handleSubmit(onSubmit)}
+                  >
+                    {isSubmitting && (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    )}
+                    {submitText}
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
   );
 }

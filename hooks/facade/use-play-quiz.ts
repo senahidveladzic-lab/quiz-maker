@@ -125,7 +125,6 @@ export function usePlayQuiz(quizId: string): UsePlayQuizReturn {
     const isLeftSwipe = distance > minSwipeDistance;
     const isRightSwipe = distance < -minSwipeDistance;
 
-    // Only allow swipe to next if answer is revealed
     if (isLeftSwipe && canGoNext) {
       handleNext();
     }
