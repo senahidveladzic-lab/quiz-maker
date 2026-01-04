@@ -15,10 +15,8 @@ import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
-  useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -27,69 +25,21 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { QuizQuestion, UseQuizFormReturn } from "@/lib/types";
-import { QuestionCard } from "./question-card";
 import { QuestionAutocomplete } from "./question-autocomplete";
 import { ReusableDialog } from "@/components/common/reusable-dialog";
+import { SortableQuestion } from "./sortable-question";
 
 interface QuizFormProps {
   title: string;
   description: string;
   submitText: string;
   formData: UseQuizFormReturn;
-}
-
-interface SortableQuestionProps {
-  question: QuizQuestion;
-  index: number;
-  control: UseQuizFormReturn["form"]["control"];
-  onRemove: (tempId: string) => void;
-  onToggleCollapse: (tempId: string) => void;
-}
-
-function SortableQuestion({
-  question,
-  index,
-  control,
-  onRemove,
-  onToggleCollapse,
-}: SortableQuestionProps) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: question.tempId });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-  };
-
-  return (
-    <div ref={setNodeRef} style={style}>
-      <QuestionCard
-        index={index}
-        control={control}
-        onRemove={onRemove}
-        namePrefix="questions"
-        isCollapsed={question.isCollapsed}
-        onToggleCollapse={onToggleCollapse}
-        tempId={question.tempId}
-        questionText={question.text}
-        dragHandleProps={{ ...attributes, ...listeners }}
-      />
-    </div>
-  );
 }
 
 export function QuizForm({
@@ -143,8 +93,8 @@ export function QuizForm({
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto py-10 max-w-4xl">
+    <section className="min-h-screen bg-background">
+      <div className="container mx-auto py-10 max-w-4xl px-4">
         <Button
           variant="ghost"
           onClick={() => router.push("/")}
@@ -155,8 +105,12 @@ export function QuizForm({
         </Button>
 
         <div className="mb-8">
-          <h1 className="text-4xl font-bold tracking-tight">{title}</h1>
-          <p className="text-muted-foreground mt-2">{description}</p>
+          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight">
+            {title}
+          </h1>
+          <p className="text-sm sm:text-base text-muted-foreground mt-2">
+            {description}
+          </p>
         </div>
 
         <Form {...form}>
@@ -210,7 +164,6 @@ export function QuizForm({
                 )}
               </CardContent>
             </Card>
-
             {/* Questions List */}
             <Card>
               <CardHeader>
@@ -264,7 +217,7 @@ export function QuizForm({
             {/* Summary and Submit */}
             <Card>
               <CardContent className="pt-6">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div className="space-y-1">
                     <p className="text-sm font-medium">Total Questions</p>
                     <p className="text-2xl font-bold">{totalQuestions}</p>
@@ -279,12 +232,19 @@ export function QuizForm({
                     <Button
                       type="button"
                       variant="outline"
+                      className="flex-1"
                       onClick={() => router.push("/")}
                       disabled={isSubmitting}
+                      size="lg"
                     >
                       Cancel
                     </Button>
-                    <Button type="submit" disabled={isSubmitting} size="lg">
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      size="lg"
+                      className="flex-1"
+                    >
                       {isSubmitting && (
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       )}
@@ -315,6 +275,6 @@ export function QuizForm({
           onConfirm={confirmRemoveQuestion}
         />
       </div>
-    </div>
+    </section>
   );
 }

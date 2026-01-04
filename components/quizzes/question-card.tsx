@@ -12,17 +12,18 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Control } from "react-hook-form";
+import { QuizFormData } from "@/lib/types";
 
 interface QuestionCardProps {
   index: number;
-  control: Control<any>;
+  control: Control<QuizFormData>;
   onRemove: (tempId: string) => void;
-  namePrefix: string;
+  namePrefix: "questions";
   isCollapsed: boolean;
   onToggleCollapse: (tempId: string) => void;
   tempId: string;
   questionText: string;
-  dragHandleProps?: any;
+  dragHandleProps?: Record<string, any>;
 }
 
 export function QuestionCard({

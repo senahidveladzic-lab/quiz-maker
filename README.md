@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Quiz Maker
+
+A Next.js application for creating and managing quizzes with question recycling capabilities.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+ installed
+- npm or yarn
+
+### Installation
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Running the Application
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+You need to run **two terminals** simultaneously:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Terminal 1 - Start the JSON Server (API):**
+```bash
+npm run json-server
+```
+This starts the mock API server on `http://localhost:3001`
 
-## Learn More
+**Terminal 2 - Start the Next.js App:**
+```bash
+npm run dev
+```
+This starts the Next.js application on `http://localhost:3000`
 
-To learn more about Next.js, take a look at the following resources:
+Open [http://localhost:3000](http://localhost:3000) in your browser to use the app.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Create and edit quizzes
+- Add custom questions or recycle existing ones
+- Drag-and-drop question reordering
+- Play quizzes with swipe navigation
+- Share quiz links
 
-## Deploy on Vercel
+## Tech Stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Frontend:** Next.js 16, React 19, TypeScript
+- **Styling:** Tailwind CSS
+- **API Calls:** TanStack Query (React Query)
+- **Forms:** React Hook Form + Zod
+- **UI Components:** Shadcn
+- **Mock API:** JSON Server
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project Structure
+
+- `/app` - Next.js app router pages
+- `/components` - Reusable React components
+- `/hooks` - Custom hooks and facades
+- `/lib` - Utilities, API client, and types
+- `db.json` - Mock database for development

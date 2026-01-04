@@ -13,12 +13,14 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <section className="min-h-screen bg-background">
       <div className="container mx-auto py-10 px-4">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-8 gap-4">
           <div>
-            <h1 className="text-4xl font-bold tracking-tight">Quiz Maker</h1>
-            <p className="text-muted-foreground mt-2">
+            <h1 className="text-2xl sm:text-4xl font-bold tracking-tight">
+              Quiz Maker
+            </h1>
+            <p className="text-muted-foreground text-sm sm:text-base mt-2">
               Create and manage your quizzes
             </p>
           </div>
@@ -30,6 +32,6 @@ export default function Home() {
 
         <QuizzesTable />
       </div>
-    </div>
+    </section>
   );
 }

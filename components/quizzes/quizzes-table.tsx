@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash2, Play } from "lucide-react";
+import { Trash2, Play } from "lucide-react";
 import { ReusableDialog } from "@/components/common/reusable-dialog";
 import { useQuizzesTable } from "@/hooks/facade/use-quizzes-table";
 

@@ -57,7 +57,7 @@ export default function PlayQuizPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <section className="min-h-screen bg-background">
       <div className="container mx-auto py-6 px-4 max-w-4xl">
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
@@ -194,6 +194,6 @@ export default function PlayQuizPage() {
           </div>
         )}
       </div>
-    </div>
+    </section>
   );
 }
