@@ -4,11 +4,13 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useDeleteQuiz, useQuizzes } from "@/lib/api/quiz-api";
 import { Quiz } from "@/lib/types";
+import { UseQueryResult } from "@tanstack/react-query";
 
 export interface UseQuizzesTableReturn {
   quizzes: Quiz[] | undefined;
   isLoading: boolean;
   error: Error | null;
+  refetch: UseQueryResult<Quiz[], Error>["refetch"];
   deleteDialog: {
     open: boolean;
     quiz: Quiz | null;
@@ -30,7 +32,7 @@ export interface UseQuizzesTableReturn {
 
 export function useQuizzesTable(): UseQuizzesTableReturn {
   const router = useRouter();
-  const { data: quizzes, isLoading, error } = useQuizzes();
+  const { data: quizzes, isLoading, error, refetch } = useQuizzes();
   const deleteQuizMutation = useDeleteQuiz();
 
   const [deleteDialog, setDeleteDialog] = useState<{
@@ -68,6 +70,7 @@ export function useQuizzesTable(): UseQuizzesTableReturn {
     quizzes,
     isLoading,
     error,
+    refetch,
     deleteDialog,
     setDeleteDialog,
     isDeleting: deleteQuizMutation.isPending,

@@ -1,237 +1,770 @@
 {
   "quizzes": [
     {
-      "name": "JavaScript Basics Quiz",
+      "name": "Movies & TV Trivia",
       "questions": [
         {
-          "id": "2",
-          "text": "Explain hoisting in JavaScript",
-          "answer": "Hoisting is JavaScript's default behavior of moving declarations to the top of the current scope before code execution."
+          "id": "mov1",
+          "text": "What is the name of the coffee shop in Friends?",
+          "answer": "Central Perk"
         },
         {
-          "id": "3",
-          "text": "What is the difference between == and === in JavaScript Test?",
-          "answer": "== compares values with type coercion, while === compares both value and type without coercion (strict equality)."
+          "id": "mov2",
+          "text": "Which movie won the Academy Award for Best Picture in 2020?",
+          "answer": "Parasite"
         },
         {
-          "id": "1",
-          "text": "What is a closure in JavaScript?",
-          "answer": "A closure is a function that has access to variables in its outer (enclosing) scope, even after the outer function has returned."
+          "id": "mov3",
+          "text": "What is Baby Yoda's real name in The Mandalorian?",
+          "answer": "Grogu"
         },
         {
-          "id": "q-1767548586774-3",
-          "text": "What is the Virtual DOM?",
-          "answer": "The Virtual DOM is a lightweight copy of the actual DOM that React uses to optimize rendering by comparing changes before updating the real DOM."
+          "id": "mov4",
+          "text": "In The Matrix, what color pill does Neo take?",
+          "answer": "The red pill"
+        },
+        {
+          "id": "mov5",
+          "text": "What is the highest-grossing film of all time (not adjusted for inflation)?",
+          "answer": "Avatar"
+        },
+        {
+          "id": "mov6",
+          "text": "Which actor played Tony Stark/Iron Man in the Marvel Cinematic Universe?",
+          "answer": "Robert Downey Jr."
+        },
+        {
+          "id": "mov7",
+          "text": "What year did the first episode of The Simpsons air?",
+          "answer": "1989"
+        },
+        {
+          "id": "mov8",
+          "text": "In Breaking Bad, what is Walter White's alias?",
+          "answer": "Heisenberg"
+        },
+        {
+          "id": "mov9",
+          "text": "Which film features the quote 'Here's looking at you, kid'?",
+          "answer": "Casablanca"
+        },
+        {
+          "id": "mov10",
+          "text": "How many seasons did Game of Thrones run for?",
+          "answer": "8 seasons"
+        },
+        {
+          "id": "mov11",
+          "text": "What is the name of the island in Jurassic Park?",
+          "answer": "Isla Nublar"
+        },
+        {
+          "id": "mov12",
+          "text": "Which actress played Eleven in Stranger Things?",
+          "answer": "Millie Bobby Brown"
+        },
+        {
+          "id": "mov13",
+          "text": "In The Office (US), what is Michael Scott's favorite quote?",
+          "answer": "That's what she said"
+        },
+        {
+          "id": "mov14",
+          "text": "What is the name of the kingdom in Frozen?",
+          "answer": "Arendelle"
+        },
+        {
+          "id": "mov15",
+          "text": "Which director is known for films like Inception, Interstellar, and The Dark Knight?",
+          "answer": "Christopher Nolan"
+        },
+        {
+          "id": "mov16",
+          "text": "What Netflix series features a chess prodigy named Beth Harmon?",
+          "answer": "The Queen's Gambit"
+        },
+        {
+          "id": "mov17",
+          "text": "In Harry Potter, what platform do students use to catch the Hogwarts Express?",
+          "answer": "Platform 9¾"
+        },
+        {
+          "id": "mov18",
+          "text": "Which actor voices Woody in the Toy Story franchise?",
+          "answer": "Tom Hanks"
         }
       ],
-      "id": "1"
+      "id": "pop1"
     },
     {
-      "name": "React Fundamentals",
+      "id": "pop2",
+      "name": "Music Madness",
       "questions": [
         {
-          "id": "q-1767517526746-0",
-          "text": "What is the purpose of useEffect hook?",
-          "answer": "useEffect is used to perform side effects in functional components, such as data fetching, subscriptions, or manually changing the DOM."
+          "id": "mus1",
+          "text": "Which artist has won the most Grammy Awards of all time?",
+          "answer": "Beyoncé"
         },
         {
-          "id": "5",
-          "text": "What are React Hooks????",
-          "answer": "Hooks are functions that let you use state and other React features in functional components without writing a class."
+          "id": "mus2",
+          "text": "What was the name of Nirvana's breakthrough 1991 album?",
+          "answer": "Nevermind"
         },
         {
-          "id": "q-1767518840922-2",
-          "text": "What is the purpose of useEffect hook?",
-          "answer": "useEffect is used to perform side effects in functional components, such as data fetching, subscriptions, or manually changing the DOM."
-        }
-      ],
-      "id": "2"
-    },
-    {
-      "id": "095f",
-      "name": "TOP 100 Groups",
-      "questions": [
-        {
-          "id": "ecf9",
-          "text": "What is this ?",
-          "answer": "what"
+          "id": "mus3",
+          "text": "Which female artist released the album 'Lemonade' in 2016?",
+          "answer": "Beyoncé"
         },
         {
-          "id": "3",
-          "text": "What is the difference between == and === in JavaScript Test?",
-          "answer": "== compares values with type coercion, while === compares both value and type without coercion (strict equality)."
+          "id": "mus4",
+          "text": "What is Eminem's real name?",
+          "answer": "Marshall Bruce Mathers III (or Marshall Mathers)"
         },
         {
-          "id": "2",
-          "text": "Explain hoisting in JavaScript",
-          "answer": "Hoisting is JavaScript's default behavior of moving declarations to the top of the current scope before code execution."
+          "id": "mus5",
+          "text": "Which band sang 'Bohemian Rhapsody'?",
+          "answer": "Queen"
         },
         {
-          "id": "7",
-          "text": "Explain event delegation in JavaScript",
-          "answer": "Event delegation is a technique where you attach a single event listener to a parent element instead of multiple listeners to child elements, taking advantage of event bubbling."
+          "id": "mus6",
+          "text": "What year did Michael Jackson release 'Thriller'?",
+          "answer": "1982"
+        },
+        {
+          "id": "mus7",
+          "text": "Which K-pop group has a song called 'Dynamite'?",
+          "answer": "BTS"
+        },
+        {
+          "id": "mus8",
+          "text": "What is Madonna's full birth name?",
+          "answer": "Madonna Louise Ciccone"
+        },
+        {
+          "id": "mus9",
+          "text": "Which rapper's real name is Aubrey Graham?",
+          "answer": "Drake"
+        },
+        {
+          "id": "mus10",
+          "text": "What was Taylor Swift's first single?",
+          "answer": "Tim McGraw"
+        },
+        {
+          "id": "mus11",
+          "text": "Which British band released the album 'A Rush of Blood to the Head'?",
+          "answer": "Coldplay"
+        },
+        {
+          "id": "mus12",
+          "text": "What instrument does Lizzo famously play?",
+          "answer": "Flute"
+        },
+        {
+          "id": "mus13",
+          "text": "Which music festival takes place in Indio, California?",
+          "answer": "Coachella"
+        },
+        {
+          "id": "mus14",
+          "text": "What is the best-selling album of all time?",
+          "answer": "Thriller by Michael Jackson"
+        },
+        {
+          "id": "mus15",
+          "text": "Which artist interrupted Taylor Swift at the 2009 MTV VMAs?",
+          "answer": "Kanye West"
+        },
+        {
+          "id": "mus16",
+          "text": "What year did Elvis Presley die?",
+          "answer": "1977"
+        },
+        {
+          "id": "mus17",
+          "text": "Which Spice Girl was known as 'Posh Spice'?",
+          "answer": "Victoria Beckham (or Victoria Adams)"
+        },
+        {
+          "id": "mus18",
+          "text": "What does AC/DC stand for in the band's name?",
+          "answer": "Alternating Current/Direct Current"
+        },
+        {
+          "id": "mus19",
+          "text": "Which artist holds the record for most Billboard Hot 100 number-one singles?",
+          "answer": "The Beatles"
+        },
+        {
+          "id": "mus20",
+          "text": "What was the first music video played on MTV?",
+          "answer": "Video Killed the Radio Star by The Buggles"
         }
       ]
     },
     {
-      "name": "JS Quiz",
+      "id": "pop3",
+      "name": "General Pop Culture",
       "questions": [
         {
-          "id": "5",
-          "text": "What are React Hooks?",
-          "answer": "Hooks are functions that let you use state and other React features in functional components without writing a class."
+          "id": "gen1",
+          "text": "What social media platform was originally called 'Twitter' before rebranding?",
+          "answer": "X"
         },
         {
-          "id": "2",
-          "text": "Explain hoisting in JavaScript",
-          "answer": "Hoisting is JavaScript's default behavior of moving declarations to the top of the current scope before code execution."
+          "id": "gen2",
+          "text": "Who hosted The Tonight Show before Jimmy Fallon?",
+          "answer": "Jay Leno (or Conan O'Brien briefly)"
         },
         {
-          "id": "6",
-          "text": "What is the Virtual DOM?",
-          "answer": "The Virtual DOM is a lightweight copy of the actual DOM that React uses to optimize rendering by comparing changes before updating the real DOM."
+          "id": "gen3",
+          "text": "Which Kardashian sister is the oldest?",
+          "answer": "Kourtney Kardashian"
         },
         {
-          "id": "7a2d",
-          "text": "Some new question",
-          "answer": "What is the answer"
+          "id": "gen4",
+          "text": "What year did Princess Diana die?",
+          "answer": "1997"
         },
         {
-          "id": "q-1767548700482-4",
-          "text": "What is the purpose of useEffect hook?",
-          "answer": "useEffect is used to perform side effects in functional components, such as data fetching, subscriptions, or manually changing the DOM."
+          "id": "gen5",
+          "text": "Which company created the iPhone?",
+          "answer": "Apple"
+        },
+        {
+          "id": "gen6",
+          "text": "What is the name of Beyoncé and Jay-Z's first child?",
+          "answer": "Blue Ivy Carter"
+        },
+        {
+          "id": "gen7",
+          "text": "Which fast food chain has the slogan 'I'm lovin' it'?",
+          "answer": "McDonald's"
+        },
+        {
+          "id": "gen8",
+          "text": "What year did TikTok launch internationally?",
+          "answer": "2018"
+        },
+        {
+          "id": "gen9",
+          "text": "Who is the youngest person to win a Nobel Peace Prize?",
+          "answer": "Malala Yousafzai"
+        },
+        {
+          "id": "gen10",
+          "text": "Which streaming service created the show Squid Game?",
+          "answer": "Netflix"
+        },
+        {
+          "id": "gen11",
+          "text": "What is Rihanna's home country?",
+          "answer": "Barbados"
+        },
+        {
+          "id": "gen12",
+          "text": "Which athlete is known as 'The King' in basketball?",
+          "answer": "LeBron James"
+        },
+        {
+          "id": "gen13",
+          "text": "What does the abbreviation 'GOAT' stand for?",
+          "answer": "Greatest Of All Time"
+        },
+        {
+          "id": "gen14",
+          "text": "Which fashion brand's logo features a swoosh?",
+          "answer": "Nike"
+        },
+        {
+          "id": "gen15",
+          "text": "What is the most-liked post on Instagram (as of 2023)?",
+          "answer": "An egg (the world_record_egg account)"
+        },
+        {
+          "id": "gen16",
+          "text": "Who painted the Mona Lisa?",
+          "answer": "Leonardo da Vinci"
+        },
+        {
+          "id": "gen17",
+          "text": "Which celebrity couple is known as 'Bennifer'?",
+          "answer": "Ben Affleck and Jennifer Lopez"
         }
-      ],
-      "id": "ca25"
+      ]
     },
     {
-      "name": "Test",
+      "id": "pop4",
+      "name": "90s & 2000s Nostalgia",
       "questions": [
         {
-          "id": "q-1767527895985-0",
-          "text": "Explain hoisting in JavaScript 222",
-          "answer": "Hoisting is JavaScript's default behavior of moving declarations to the top of the current scope before code execution."
+          "id": "nos1",
+          "text": "What was the name of the Tamagotchi virtual pet toy from the 90s?",
+          "answer": "Tamagotchi"
         },
         {
-          "id": "1",
-          "text": "What is a closure in JavaScript?",
-          "answer": "A closure is a function that has access to variables in its outer (enclosing) scope, even after the outer function has returned."
+          "id": "nos2",
+          "text": "Which boy band sang 'I Want It That Way'?",
+          "answer": "Backstreet Boys"
         },
         {
-          "id": "8",
-          "text": "What is the purpose of useEffect hook?",
-          "answer": "useEffect is used to perform side effects in functional components, such as data fetching, subscriptions, or manually changing the DOM."
+          "id": "nos3",
+          "text": "What year did the first iPod come out?",
+          "answer": "2001"
+        },
+        {
+          "id": "nos4",
+          "text": "Which Nickelodeon show featured characters named Tommy, Chuckie, and Angelica?",
+          "answer": "Rugrats"
+        },
+        {
+          "id": "nos5",
+          "text": "What does 'Y2K' stand for?",
+          "answer": "Year 2000"
+        },
+        {
+          "id": "nos6",
+          "text": "Which pop star's 2007 public meltdown included shaving her head?",
+          "answer": "Britney Spears"
+        },
+        {
+          "id": "nos7",
+          "text": "What gaming console did Nintendo release in 1996?",
+          "answer": "Nintendo 64 (N64)"
+        },
+        {
+          "id": "nos8",
+          "text": "Which sitcom featured a character named Screech?",
+          "answer": "Saved by the Bell"
+        },
+        {
+          "id": "nos9",
+          "text": "What was the name of the social networking site popular before Facebook?",
+          "answer": "MySpace"
+        },
+        {
+          "id": "nos10",
+          "text": "Which movie trilogy started in 1999 with Keanu Reeves as Neo?",
+          "answer": "The Matrix"
+        },
+        {
+          "id": "nos11",
+          "text": "What was the name of Destiny's Child's breakout hit in 1999?",
+          "answer": "Say My Name (or Bills, Bills, Bills)"
+        },
+        {
+          "id": "nos12",
+          "text": "Which Disney Channel show made Miley Cyrus famous?",
+          "answer": "Hannah Montana"
+        },
+        {
+          "id": "nos13",
+          "text": "What collectible card game took over playgrounds in the late 90s?",
+          "answer": "Pokémon cards"
+        },
+        {
+          "id": "nos14",
+          "text": "Which rapper wore parachute pants in the 'U Can't Touch This' music video?",
+          "answer": "MC Hammer"
+        },
+        {
+          "id": "nos15",
+          "text": "What year did the first Harry Potter book come out?",
+          "answer": "1997"
+        },
+        {
+          "id": "nos16",
+          "text": "Which Cartoon Network show featured three superpowered girls created by Professor Utonium?",
+          "answer": "The Powerpuff Girls"
+        },
+        {
+          "id": "nos17",
+          "text": "What was the name of the MSN messaging service?",
+          "answer": "MSN Messenger (or Windows Live Messenger)"
+        },
+        {
+          "id": "nos18",
+          "text": "Which reality TV show premiered in 2000 and stranded contestants on an island?",
+          "answer": "Survivor"
+        },
+        {
+          "id": "nos19",
+          "text": "What Nokia phone model became iconic in the early 2000s?",
+          "answer": "Nokia 3310"
         }
-      ],
-      "id": "adca"
-    },
-    {
-      "name": "React Fundamentals 2",
-      "questions": [
-        {
-          "id": "q-1767549521706-0",
-          "text": "Test me",
-          "answer": "Test"
-        },
-        {
-          "id": "ecf9",
-          "text": "What is this ?",
-          "answer": "what"
-        },
-        {
-          "id": "7",
-          "text": "Explain event delegation in JavaScript",
-          "answer": "Event delegation is a technique where you attach a single event listener to a parent element instead of multiple listeners to child elements, taking advantage of event bubbling."
-        },
-        {
-          "id": "5",
-          "text": "What are React Hooks?",
-          "answer": "Hooks are functions that let you use state and other React features in functional components without writing a class."
-        },
-        {
-          "id": "2",
-          "text": "Explain hoisting in JavaScript",
-          "answer": "Hoisting is JavaScript's default behavior of moving declarations to the top of the current scope before code execution."
-        },
-        {
-          "id": "1",
-          "text": "What is a closure in JavaScript?",
-          "answer": "A closure is a function that has access to variables in its outer (enclosing) scope, even after the outer function has returned."
-        },
-        {
-          "id": "3",
-          "text": "What is the difference between == and === in JavaScript Test?",
-          "answer": "== compares values with type coercion, while === compares both value and type without coercion (strict equality)."
-        },
-        {
-          "id": "6",
-          "text": "What is the Virtual DOM?",
-          "answer": "The Virtual DOM is a lightweight copy of the actual DOM that React uses to optimize rendering by comparing changes before updating the real DOM."
-        },
-        {
-          "id": "q-1767549419590-5",
-          "text": "Test Test",
-          "answer": "Test"
-        }
-      ],
-      "id": "c237"
+      ]
     }
   ],
   "questions": [
     {
-      "id": "1",
-      "text": "What is a closure in JavaScript?",
-      "answer": "A closure is a function that has access to variables in its outer (enclosing) scope, even after the outer function has returned."
+      "id": "mov1",
+      "text": "What is the name of the coffee shop in Friends?",
+      "answer": "Central Perk"
     },
     {
-      "id": "2",
-      "text": "Explain hoisting in JavaScript",
-      "answer": "Hoisting is JavaScript's default behavior of moving declarations to the top of the current scope before code execution."
+      "id": "mov2",
+      "text": "Which movie won the Academy Award for Best Picture in 2020?",
+      "answer": "Parasite"
     },
     {
-      "id": "3",
-      "text": "What is the difference between == and === in JavaScript Test?",
-      "answer": "== compares values with type coercion, while === compares both value and type without coercion (strict equality)."
+      "id": "mov3",
+      "text": "What is Baby Yoda's real name in The Mandalorian?",
+      "answer": "Grogu"
     },
     {
-      "id": "4",
-      "text": "What is JSX?",
-      "answer": "JSX is a syntax extension for JavaScript that allows writing HTML-like code in JavaScript files. It gets transpiled to React.createElement() calls."
+      "id": "mov4",
+      "text": "In The Matrix, what color pill does Neo take?",
+      "answer": "The red pill"
     },
     {
-      "id": "5",
-      "text": "What are React Hooks?",
-      "answer": "Hooks are functions that let you use state and other React features in functional components without writing a class."
+      "id": "mov5",
+      "text": "What is the highest-grossing film of all time (not adjusted for inflation)?",
+      "answer": "Avatar"
     },
     {
-      "id": "6",
-      "text": "What is the Virtual DOM?",
-      "answer": "The Virtual DOM is a lightweight copy of the actual DOM that React uses to optimize rendering by comparing changes before updating the real DOM."
+      "id": "mov6",
+      "text": "Which actor played Tony Stark/Iron Man in the Marvel Cinematic Universe?",
+      "answer": "Robert Downey Jr."
     },
     {
-      "id": "7",
-      "text": "Explain event delegation in JavaScript",
-      "answer": "Event delegation is a technique where you attach a single event listener to a parent element instead of multiple listeners to child elements, taking advantage of event bubbling."
+      "id": "mov7",
+      "text": "What year did the first episode of The Simpsons air?",
+      "answer": "1989"
     },
     {
-      "id": "8",
-      "text": "What is the purpose of useEffect hook?",
-      "answer": "useEffect is used to perform side effects in functional components, such as data fetching, subscriptions, or manually changing the DOM."
+      "id": "mov8",
+      "text": "In Breaking Bad, what is Walter White's alias?",
+      "answer": "Heisenberg"
     },
     {
-      "id": "a6df",
-      "text": "fdsafsafsafsa",
-      "answer": "fsafsafsafsafsa"
+      "id": "mov9",
+      "text": "Which film features the quote 'Here's looking at you, kid'?",
+      "answer": "Casablanca"
     },
     {
-      "id": "ecf9",
-      "text": "What is this ?",
-      "answer": "what"
+      "id": "mov10",
+      "text": "How many seasons did Game of Thrones run for?",
+      "answer": "8 seasons"
     },
     {
-      "id": "7a2d",
-      "text": "Some new question",
-      "answer": "What is the answer"
+      "id": "mov11",
+      "text": "What is the name of the island in Jurassic Park?",
+      "answer": "Isla Nublar"
+    },
+    {
+      "id": "mov12",
+      "text": "Which actress played Eleven in Stranger Things?",
+      "answer": "Millie Bobby Brown"
+    },
+    {
+      "id": "mov13",
+      "text": "In The Office (US), what is Michael Scott's favorite quote?",
+      "answer": "That's what she said"
+    },
+    {
+      "id": "mov14",
+      "text": "What is the name of the kingdom in Frozen?",
+      "answer": "Arendelle"
+    },
+    {
+      "id": "mov15",
+      "text": "Which director is known for films like Inception, Interstellar, and The Dark Knight?",
+      "answer": "Christopher Nolan"
+    },
+    {
+      "id": "mov16",
+      "text": "What Netflix series features a chess prodigy named Beth Harmon?",
+      "answer": "The Queen's Gambit"
+    },
+    {
+      "id": "mov17",
+      "text": "In Harry Potter, what platform do students use to catch the Hogwarts Express?",
+      "answer": "Platform 9¾"
+    },
+    {
+      "id": "mov18",
+      "text": "Which actor voices Woody in the Toy Story franchise?",
+      "answer": "Tom Hanks"
+    },
+    {
+      "id": "mus1",
+      "text": "Which artist has won the most Grammy Awards of all time?",
+      "answer": "Beyoncé"
+    },
+    {
+      "id": "mus2",
+      "text": "What was the name of Nirvana's breakthrough 1991 album?",
+      "answer": "Nevermind"
+    },
+    {
+      "id": "mus3",
+      "text": "Which female artist released the album 'Lemonade' in 2016?",
+      "answer": "Beyoncé"
+    },
+    {
+      "id": "mus4",
+      "text": "What is Eminem's real name?",
+      "answer": "Marshall Bruce Mathers III (or Marshall Mathers)"
+    },
+    {
+      "id": "mus5",
+      "text": "Which band sang 'Bohemian Rhapsody'?",
+      "answer": "Queen"
+    },
+    {
+      "id": "mus6",
+      "text": "What year did Michael Jackson release 'Thriller'?",
+      "answer": "1982"
+    },
+    {
+      "id": "mus7",
+      "text": "Which K-pop group has a song called 'Dynamite'?",
+      "answer": "BTS"
+    },
+    {
+      "id": "mus8",
+      "text": "What is Madonna's full birth name?",
+      "answer": "Madonna Louise Ciccone"
+    },
+    {
+      "id": "mus9",
+      "text": "Which rapper's real name is Aubrey Graham?",
+      "answer": "Drake"
+    },
+    {
+      "id": "mus10",
+      "text": "What was Taylor Swift's first single?",
+      "answer": "Tim McGraw"
+    },
+    {
+      "id": "mus11",
+      "text": "Which British band released the album 'A Rush of Blood to the Head'?",
+      "answer": "Coldplay"
+    },
+    {
+      "id": "mus12",
+      "text": "What instrument does Lizzo famously play?",
+      "answer": "Flute"
+    },
+    {
+      "id": "mus13",
+      "text": "Which music festival takes place in Indio, California?",
+      "answer": "Coachella"
+    },
+    {
+      "id": "mus14",
+      "text": "What is the best-selling album of all time?",
+      "answer": "Thriller by Michael Jackson"
+    },
+    {
+      "id": "mus15",
+      "text": "Which artist interrupted Taylor Swift at the 2009 MTV VMAs?",
+      "answer": "Kanye West"
+    },
+    {
+      "id": "mus16",
+      "text": "What year did Elvis Presley die?",
+      "answer": "1977"
+    },
+    {
+      "id": "mus17",
+      "text": "Which Spice Girl was known as 'Posh Spice'?",
+      "answer": "Victoria Beckham (or Victoria Adams)"
+    },
+    {
+      "id": "mus18",
+      "text": "What does AC/DC stand for in the band's name?",
+      "answer": "Alternating Current/Direct Current"
+    },
+    {
+      "id": "mus19",
+      "text": "Which artist holds the record for most Billboard Hot 100 number-one singles?",
+      "answer": "The Beatles"
+    },
+    {
+      "id": "mus20",
+      "text": "What was the first music video played on MTV?",
+      "answer": "Video Killed the Radio Star by The Buggles"
+    },
+    {
+      "id": "gen1",
+      "text": "What social media platform was originally called 'Twitter' before rebranding?",
+      "answer": "X"
+    },
+    {
+      "id": "gen2",
+      "text": "Who hosted The Tonight Show before Jimmy Fallon?",
+      "answer": "Jay Leno (or Conan O'Brien briefly)"
+    },
+    {
+      "id": "gen3",
+      "text": "Which Kardashian sister is the oldest?",
+      "answer": "Kourtney Kardashian"
+    },
+    {
+      "id": "gen4",
+      "text": "What year did Princess Diana die?",
+      "answer": "1997"
+    },
+    {
+      "id": "gen5",
+      "text": "Which company created the iPhone?",
+      "answer": "Apple"
+    },
+    {
+      "id": "gen6",
+      "text": "What is the name of Beyoncé and Jay-Z's first child?",
+      "answer": "Blue Ivy Carter"
+    },
+    {
+      "id": "gen7",
+      "text": "Which fast food chain has the slogan 'I'm lovin' it'?",
+      "answer": "McDonald's"
+    },
+    {
+      "id": "gen8",
+      "text": "What year did TikTok launch internationally?",
+      "answer": "2018"
+    },
+    {
+      "id": "gen9",
+      "text": "Who is the youngest person to win a Nobel Peace Prize?",
+      "answer": "Malala Yousafzai"
+    },
+    {
+      "id": "gen10",
+      "text": "Which streaming service created the show Squid Game?",
+      "answer": "Netflix"
+    },
+    {
+      "id": "gen11",
+      "text": "What is Rihanna's home country?",
+      "answer": "Barbados"
+    },
+    {
+      "id": "gen12",
+      "text": "Which athlete is known as 'The King' in basketball?",
+      "answer": "LeBron James"
+    },
+    {
+      "id": "gen13",
+      "text": "What does the abbreviation 'GOAT' stand for?",
+      "answer": "Greatest Of All Time"
+    },
+    {
+      "id": "gen14",
+      "text": "Which fashion brand's logo features a swoosh?",
+      "answer": "Nike"
+    },
+    {
+      "id": "gen15",
+      "text": "What is the most-liked post on Instagram (as of 2023)?",
+      "answer": "An egg (the world_record_egg account)"
+    },
+    {
+      "id": "gen16",
+      "text": "Who painted the Mona Lisa?",
+      "answer": "Leonardo da Vinci"
+    },
+    {
+      "id": "gen17",
+      "text": "Which celebrity couple is known as 'Bennifer'?",
+      "answer": "Ben Affleck and Jennifer Lopez"
+    },
+    {
+      "id": "nos1",
+      "text": "What was the name of the Tamagotchi virtual pet toy from the 90s?",
+      "answer": "Tamagotchi"
+    },
+    {
+      "id": "nos2",
+      "text": "Which boy band sang 'I Want It That Way'?",
+      "answer": "Backstreet Boys"
+    },
+    {
+      "id": "nos3",
+      "text": "What year did the first iPod come out?",
+      "answer": "2001"
+    },
+    {
+      "id": "nos4",
+      "text": "Which Nickelodeon show featured characters named Tommy, Chuckie, and Angelica?",
+      "answer": "Rugrats"
+    },
+    {
+      "id": "nos5",
+      "text": "What does 'Y2K' stand for?",
+      "answer": "Year 2000"
+    },
+    {
+      "id": "nos6",
+      "text": "Which pop star's 2007 public meltdown included shaving her head?",
+      "answer": "Britney Spears"
+    },
+    {
+      "id": "nos7",
+      "text": "What gaming console did Nintendo release in 1996?",
+      "answer": "Nintendo 64 (N64)"
+    },
+    {
+      "id": "nos8",
+      "text": "Which sitcom featured a character named Screech?",
+      "answer": "Saved by the Bell"
+    },
+    {
+      "id": "nos9",
+      "text": "What was the name of the social networking site popular before Facebook?",
+      "answer": "MySpace"
+    },
+    {
+      "id": "nos10",
+      "text": "Which movie trilogy started in 1999 with Keanu Reeves as Neo?",
+      "answer": "The Matrix"
+    },
+    {
+      "id": "nos11",
+      "text": "What was the name of Destiny's Child's breakout hit in 1999?",
+      "answer": "Say My Name (or Bills, Bills, Bills)"
+    },
+    {
+      "id": "nos12",
+      "text": "Which Disney Channel show made Miley Cyrus famous?",
+      "answer": "Hannah Montana"
+    },
+    {
+      "id": "nos13",
+      "text": "What collectible card game took over playgrounds in the late 90s?",
+      "answer": "Pokémon cards"
+    },
+    {
+      "id": "nos14",
+      "text": "Which rapper wore parachute pants in the 'U Can't Touch This' music video?",
+      "answer": "MC Hammer"
+    },
+    {
+      "id": "nos15",
+      "text": "What year did the first Harry Potter book come out?",
+      "answer": "1997"
+    },
+    {
+      "id": "nos16",
+      "text": "Which Cartoon Network show featured three superpowered girls created by Professor Utonium?",
+      "answer": "The Powerpuff Girls"
+    },
+    {
+      "id": "nos17",
+      "text": "What was the name of the MSN messaging service?",
+      "answer": "MSN Messenger (or Windows Live Messenger)"
+    },
+    {
+      "id": "nos18",
+      "text": "Which reality TV show premiered in 2000 and stranded contestants on an island?",
+      "answer": "Survivor"
+    },
+    {
+      "id": "nos19",
+      "text": "What Nokia phone model became iconic in the early 2000s?",
+      "answer": "Nokia 3310"
     }
   ]
 }

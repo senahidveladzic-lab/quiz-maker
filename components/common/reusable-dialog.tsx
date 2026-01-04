@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ReusableDialogProps {
   open: boolean;
@@ -23,6 +24,14 @@ interface ReusableDialogProps {
   cancelText?: string;
   children?: React.ReactNode;
   isLoading?: boolean;
+  contentClassName?: string;
+  headerClassName?: string;
+  titleClassName?: string;
+  descriptionClassName?: string;
+  footerClassName?: string;
+  cancelButtonClassName?: string;
+  confirmButtonClassName?: string;
+  childrenClassName?: string;
 }
 
 export function ReusableDialog({
@@ -37,6 +46,14 @@ export function ReusableDialog({
   cancelText = "Cancel",
   children,
   isLoading = false,
+  contentClassName,
+  headerClassName,
+  titleClassName,
+  descriptionClassName,
+  footerClassName,
+  cancelButtonClassName,
+  confirmButtonClassName,
+  childrenClassName,
 }: ReusableDialogProps) {
   const handleCancel = () => {
     onCancel?.();
@@ -49,21 +66,34 @@ export function ReusableDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+      <DialogContent className={cn("sm:max-w-[425px]", contentClassName)}>
+        <DialogHeader className={headerClassName}>
+          <DialogTitle
+            className={cn("flex items-center gap-2", titleClassName)}
+          >
             {variant === "danger" && (
               <AlertTriangle className="h-5 w-5 text-destructive" />
             )}
             {title}
           </DialogTitle>
-          {description && <DialogDescription>{description}</DialogDescription>}
+          {description && (
+            <DialogDescription className={descriptionClassName}>
+              {description}
+            </DialogDescription>
+          )}
         </DialogHeader>
 
-        {children && <div className="py-4">{children}</div>}
+        {children && (
+          <div className={cn("py-4", childrenClassName)}>{children}</div>
+        )}
 
-        <DialogFooter>
-          <Button variant="outline" onClick={handleCancel} disabled={isLoading}>
+        <DialogFooter className={footerClassName}>
+          <Button
+            variant="outline"
+            onClick={handleCancel}
+            disabled={isLoading}
+            className={cancelButtonClassName}
+          >
             {cancelText}
           </Button>
           {onConfirm && (
@@ -71,6 +101,7 @@ export function ReusableDialog({
               variant={variant === "danger" ? "destructive" : "default"}
               onClick={handleConfirm}
               disabled={isLoading}
+              className={confirmButtonClassName}
             >
               {isLoading ? "Loading..." : confirmText}
             </Button>

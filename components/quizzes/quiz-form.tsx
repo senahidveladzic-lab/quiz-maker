@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2, Plus, ArrowLeft } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
   DndContext,
@@ -34,21 +34,13 @@ import { QuizQuestion, UseQuizFormReturn } from "@/lib/types";
 import { QuestionAutocomplete } from "./question-autocomplete";
 import { ReusableDialog } from "@/components/common/reusable-dialog";
 import { SortableQuestion } from "./sortable-question";
-import { PageHeader } from "@/components/common/page-header";
 
 interface QuizFormProps {
-  title: string;
-  description: string;
   submitText: string;
   formData: UseQuizFormReturn;
 }
 
-export function QuizForm({
-  title,
-  description,
-  submitText,
-  formData,
-}: QuizFormProps) {
+export function QuizForm({ submitText, formData }: QuizFormProps) {
   const router = useRouter();
   const {
     form,
@@ -94,25 +86,13 @@ export function QuizForm({
   };
 
   return (
-    <div className="min-h-screen bg-background pb-32">
-      <div className="container mx-auto py-10 max-w-4xl px-4">
-        <Button
-          variant="ghost"
-          onClick={() => router.push("/")}
-          className="mb-6"
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Quizzes
-        </Button>
-
-        <PageHeader title={title} description={description} />
-
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            {/* Quiz Name */}
+    <>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <section aria-labelledby="quiz-name-heading">
             <Card>
               <CardHeader>
-                <CardTitle>Quiz Name</CardTitle>
+                <CardTitle id="quiz-name-heading">Quiz Name</CardTitle>
               </CardHeader>
               <CardContent>
                 <FormField
@@ -135,11 +115,14 @@ export function QuizForm({
                 />
               </CardContent>
             </Card>
+          </section>
 
-            {/* Autocomplete for Recycling Questions */}
+          <section aria-labelledby="recycle-heading">
             <Card>
               <CardHeader>
-                <CardTitle>Recycle Existing Questions</CardTitle>
+                <CardTitle id="recycle-heading">
+                  Recycle Existing Questions
+                </CardTitle>
                 <FormDescription>
                   Select questions from previous quizzes to include in this one
                 </FormDescription>
@@ -158,11 +141,15 @@ export function QuizForm({
                 )}
               </CardContent>
             </Card>
+          </section>
 
-            {/* Questions List */}
+          <section aria-labelledby="questions-heading">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center justify-between">
+                <CardTitle
+                  id="questions-heading"
+                  className="flex items-center justify-between"
+                >
                   <span>Questions</span>
                   <Button
                     type="button"
@@ -175,7 +162,7 @@ export function QuizForm({
                   </Button>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4 ">
+              <CardContent className="space-y-4">
                 {questions.length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
                     No questions added yet. Add a new question or recycle an
@@ -208,37 +195,41 @@ export function QuizForm({
                 )}
               </CardContent>
             </Card>
-          </form>
-        </Form>
+          </section>
+        </form>
+      </Form>
 
-        <ReusableDialog
-          open={deleteQuestionDialog.open}
-          onOpenChange={(open) =>
-            setDeleteQuestionDialog({
-              open,
-              questionToDelete: open
-                ? deleteQuestionDialog.questionToDelete
-                : null,
-            })
-          }
-          variant="danger"
-          title="Delete Question"
-          description={`Are you sure you want to delete "${getQuestionPreview(deleteQuestionDialog.questionToDelete)}"?`}
-          confirmText="Delete"
-          cancelText="Cancel"
-          onConfirm={confirmRemoveQuestion}
-        />
-      </div>
+      <ReusableDialog
+        open={deleteQuestionDialog.open}
+        onOpenChange={(open) =>
+          setDeleteQuestionDialog({
+            open,
+            questionToDelete: open
+              ? deleteQuestionDialog.questionToDelete
+              : null,
+          })
+        }
+        variant="danger"
+        title="Delete Question"
+        description={`Are you sure you want to delete "${getQuestionPreview(deleteQuestionDialog.questionToDelete)}"?`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={confirmRemoveQuestion}
+      />
 
-      {/* Sticky Summary and Submit */}
-      <div className="fixed bottom-0 left-0 right-0 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-10">
-        <div className="container mx-auto max-w-4xl px-4 sm:py-4">
-          <Card className="border-0 shadow-none py-4 sm:py-6">
+      <footer className="fixed bottom-0 left-0 right-0 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-10">
+        <div className="container mx-auto max-w-4xl px-4 md:py-4">
+          <Card className="border-0 shadow-none py-3 md:py-4">
             <CardContent className="p-0">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="space-y-1 flex sm:block gap-4 items-center">
+                <div className="space-y-1 flex sm:block items-center gap-2">
                   <p className="text-sm font-medium">Total Questions</p>
                   <p className="text-2xl font-bold">{totalQuestions}</p>
+                  {totalQuestions === 0 && (
+                    <p className="text-sm text-destructive">
+                      At least one question is required
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex gap-3">
@@ -269,7 +260,7 @@ export function QuizForm({
             </CardContent>
           </Card>
         </div>
-      </div>
-    </div>
+      </footer>
+    </>
   );
 }

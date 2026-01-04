@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { QuizzesTable } from "@/components/quizzes/quizzes-table";
 import { PageHeader } from "@/components/common/page-header";
+import { PageContainer } from "@/components/layout/page-container";
 
 export default function Home() {
   const router = useRouter();
@@ -14,8 +15,8 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto py-10 px-4">
+    <PageContainer>
+      <header>
         <PageHeader
           title="Quiz Maker"
           description="Create and manage your quizzes"
@@ -26,9 +27,11 @@ export default function Home() {
             </Button>
           }
         />
+      </header>
 
+      <section aria-label="Your quizzes">
         <QuizzesTable />
-      </div>
-    </div>
+      </section>
+    </PageContainer>
   );
 }

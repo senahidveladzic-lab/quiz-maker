@@ -9,9 +9,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Trash2, Play } from "lucide-react";
+import { Trash2, Play, FileQuestion } from "lucide-react";
 import { ReusableDialog } from "@/components/common/reusable-dialog";
 import { useQuizzesTable } from "@/hooks/facade/use-quizzes-table";
+import { ErrorState } from "@/components/common/error-state";
+import { EmptyState } from "@/components/common/empty-state";
 
 export function QuizzesTable() {
   const {
@@ -25,6 +27,7 @@ export function QuizzesTable() {
     handleDeleteConfirm,
     handleEditClick,
     handleViewClick,
+    refetch,
   } = useQuizzesTable();
 
   if (isLoading) {
@@ -33,17 +36,24 @@ export function QuizzesTable() {
 
   if (error) {
     return (
-      <div className="text-center py-8 text-destructive">
-        Error loading quizzes: {error.message}
-      </div>
+      <ErrorState
+        title="Failed to load quizzes"
+        message={
+          error.message || "An error occurred while loading your quizzes."
+        }
+        actionLabel="Retry"
+        onAction={refetch}
+      />
     );
   }
 
   if (!quizzes || quizzes.length === 0) {
     return (
-      <div className="text-center py-8 text-muted-foreground">
-        No quizzes found. Create your first quiz to get started!
-      </div>
+      <EmptyState
+        icon={FileQuestion}
+        title="No quizzes found"
+        description="Create your first quiz to get started!"
+      />
     );
   }
 
