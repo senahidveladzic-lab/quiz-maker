@@ -40,6 +40,11 @@ export function useCreateQuizForm(): UseQuizFormReturn {
         type: "manual",
         message: "A quiz with this name already exists",
       });
+      setTimeout(() => {
+        const nameInput =
+          document.querySelector<HTMLInputElement>('[name="name"]');
+        nameInput?.focus();
+      }, 100);
       return;
     }
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { UseFormReturn } from "react-hook-form";
+import { UseFormReturn, useFieldArray } from "react-hook-form";
 import { toast } from "sonner";
 import { Question, QuizQuestion, QuizFormData } from "@/lib/types";
 
@@ -11,7 +11,7 @@ interface UseQuizQuestionsParams {
 }
 
 interface UseQuizQuestionsReturn {
-  questions: QuizQuestion[];
+  fields: QuizQuestion[];
   totalQuestions: number;
   availableQuestions: Question[];
   addNewQuestion: () => void;
@@ -30,12 +30,18 @@ interface UseQuizQuestionsReturn {
       questionToDelete: QuizQuestion | null;
     }>
   >;
+  lastAddedTempId: string | null;
 }
 
 export function useQuizQuestions({
   form,
   allQuestions,
 }: UseQuizQuestionsParams): UseQuizQuestionsReturn {
+  const { fields, append, remove, update, replace } = useFieldArray({
+    control: form.control,
+    name: "questions",
+  });
+
   const [deleteQuestionDialog, setDeleteQuestionDialog] = useState<{
     open: boolean;
     questionToDelete: QuizQuestion | null;
@@ -44,32 +50,36 @@ export function useQuizQuestions({
     questionToDelete: null,
   });
 
-  const questions = form.watch("questions");
-  const totalQuestions = questions.length;
+  const [lastAddedTempId, setLastAddedTempId] = useState<string | null>(null);
+
+  const totalQuestions = fields.length;
 
   const availableQuestions = allQuestions.filter(
-    (q) => !questions.some((qq) => qq.id === q.id),
+    (q) => !fields.some((field) => field.id === q.id),
   );
 
   const addNewQuestion = (): void => {
-    const current = form.getValues("questions");
+    const tempId = `new-${Date.now()}-${Math.random()}`;
     const newQuestion: QuizQuestion = {
       text: "",
       answer: "",
       isCollapsed: false,
-      tempId: `new-${Date.now()}-${Math.random()}`,
+      tempId,
     };
-    form.setValue("questions", [newQuestion, ...current]);
+    append(newQuestion);
+    setLastAddedTempId(tempId);
+
+    // Clear after a short delay
+    setTimeout(() => setLastAddedTempId(null), 500);
   };
 
   const removeQuestion = (tempId: string): void => {
-    const current = form.getValues("questions");
-    const questionToDelete = current.find((q) => q.tempId === tempId);
+    const questionToDelete = fields.find((q) => q.tempId === tempId);
 
     if (questionToDelete) {
       setDeleteQuestionDialog({
         open: true,
-        questionToDelete,
+        questionToDelete: questionToDelete as QuizQuestion,
       });
     }
   };
@@ -77,13 +87,13 @@ export function useQuizQuestions({
   const confirmRemoveQuestion = (): void => {
     if (!deleteQuestionDialog.questionToDelete) return;
 
-    const current = form.getValues("questions");
-    form.setValue(
-      "questions",
-      current.filter(
-        (q) => q.tempId !== deleteQuestionDialog.questionToDelete?.tempId,
-      ),
+    const index = fields.findIndex(
+      (q) => q.tempId === deleteQuestionDialog.questionToDelete?.tempId,
     );
+
+    if (index !== -1) {
+      remove(index);
+    }
 
     setDeleteQuestionDialog({
       open: false,
@@ -92,10 +102,9 @@ export function useQuizQuestions({
   };
 
   const addRecycledQuestion = (question: Question): void => {
-    const current = form.getValues("questions");
     const newTempId = `recycled-${question.id}`;
 
-    if (current.some((q) => q.tempId === newTempId)) {
+    if (fields.some((q) => q.tempId === newTempId)) {
       toast.error("Question already added to this quiz!");
       return;
     }
@@ -108,24 +117,24 @@ export function useQuizQuestions({
       tempId: newTempId,
     };
 
-    form.setValue("questions", [recycledQuestion, ...current]);
+    append(recycledQuestion);
     toast.success("Question added successfully!");
   };
 
   const toggleCollapse = (tempId: string): void => {
-    const current = form.getValues("questions");
-    const updated = current.map((q) =>
-      q.tempId === tempId ? { ...q, isCollapsed: !q.isCollapsed } : q,
-    );
-    form.setValue("questions", updated);
+    const index = fields.findIndex((q) => q.tempId === tempId);
+    if (index !== -1) {
+      const field = fields[index] as QuizQuestion;
+      update(index, { ...field, isCollapsed: !field.isCollapsed });
+    }
   };
 
   const reorderQuestions = (newOrder: QuizQuestion[]): void => {
-    form.setValue("questions", newOrder);
+    replace(newOrder);
   };
 
   return {
-    questions,
+    fields: fields as QuizQuestion[],
     totalQuestions,
     availableQuestions,
     addNewQuestion,
@@ -136,5 +145,6 @@ export function useQuizQuestions({
     reorderQuestions,
     deleteQuestionDialog,
     setDeleteQuestionDialog,
+    lastAddedTempId,
   };
 }

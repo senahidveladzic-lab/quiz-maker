@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Trash2, Play, FileQuestion } from "lucide-react";
 import { ReusableDialog } from "@/components/common/reusable-dialog";
+import { TablePagination } from "@/components/common/table-pagination";
 import { useQuizzesTable } from "@/hooks/facade/use-quizzes-table";
 import { ErrorState } from "@/components/common/error-state";
 import { EmptyState } from "@/components/common/empty-state";
@@ -28,6 +29,12 @@ export function QuizzesTable() {
     handleEditClick,
     handleViewClick,
     refetch,
+    currentPage,
+    totalPages,
+    paginatedQuizzes,
+    setCurrentPage,
+    totalItems,
+    itemsPerPage,
   } = useQuizzesTable();
 
   if (isLoading) {
@@ -59,57 +66,70 @@ export function QuizzesTable() {
 
   return (
     <>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Quiz Name</TableHead>
-              <TableHead className="text-center">Questions</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {quizzes.map((quiz) => (
-              <TableRow
-                key={quiz.id}
-                className="cursor-pointer hover:bg-muted/50"
-                onClick={() => handleEditClick(quiz)}
-              >
-                <TableCell className="font-medium">{quiz.name}</TableCell>
-                <TableCell className="text-center">
-                  {quiz.questions?.length}
-                </TableCell>
-                <TableCell className="text-right">
-                  <div className="flex justify-end gap-2">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleViewClick(quiz);
-                      }}
-                      title="View Quiz"
-                    >
-                      <Play className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteClick(quiz);
-                      }}
-                      title="Delete Quiz"
-                      className="text-destructive hover:text-destructive"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </TableCell>
+      <div className="space-y-4">
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Quiz Name</TableHead>
+                <TableHead className="text-center">Questions</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {paginatedQuizzes.map((quiz) => (
+                <TableRow
+                  key={quiz.id}
+                  className="cursor-pointer hover:bg-muted/50"
+                  onClick={() => handleEditClick(quiz)}
+                >
+                  <TableCell className="font-medium">{quiz.name}</TableCell>
+                  <TableCell className="text-center">
+                    {quiz.questions?.length}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex justify-end gap-2">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleViewClick(quiz);
+                        }}
+                        title="Play Quiz"
+                        aria-label={`Play ${quiz.name}`}
+                      >
+                        <Play className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteClick(quiz);
+                        }}
+                        title="Delete Quiz"
+                        aria-label={`Delete ${quiz.name}`}
+                        className="text-destructive hover:text-destructive"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+
+        <TablePagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          totalItems={totalItems}
+          itemsPerPage={itemsPerPage}
+          itemName="quizzes"
+        />
       </div>
 
       <ReusableDialog

@@ -13,6 +13,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Control } from "react-hook-form";
 import { QuizFormData } from "@/lib/types";
+import { useEffect, useRef } from "react";
+import { cn, truncateText } from "@/lib/utils";
 
 interface QuestionCardProps {
   index: number;
@@ -24,6 +26,7 @@ interface QuestionCardProps {
   tempId: string;
   questionText: string;
   dragHandleProps?: Record<string, any>;
+  isNew?: boolean;
 }
 
 export function QuestionCard({
@@ -36,33 +39,56 @@ export function QuestionCard({
   tempId,
   questionText,
   dragHandleProps,
+  isNew = false,
 }: QuestionCardProps) {
-  const truncateText = (text: string, maxLength: number = 60) => {
-    if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength) + "...";
-  };
+  const questionInputRef = useRef<HTMLTextAreaElement>(null);
+  const hasError = !!(
+    control._formState.errors.questions?.[index]?.text ||
+    control._formState.errors.questions?.[index]?.answer
+  );
+  useEffect(() => {
+    if (isNew && !isCollapsed && questionInputRef.current) {
+      setTimeout(() => {
+        questionInputRef.current?.focus();
+      }, 100);
+    }
+  }, [isNew, isCollapsed]);
 
   return (
-    <Card className="border-2">
+    <Card
+      className={cn(
+        "border-2",
+        hasError && isCollapsed && "border-destructive",
+      )}
+    >
       <CardHeader className="pb-3">
         <div className="flex items-center gap-2">
           {/* Drag Handle */}
           <div
             {...dragHandleProps}
             className="cursor-grab active:cursor-grabbing"
+            aria-label="Drag to reorder question"
           >
             <GripVertical className="h-5 w-5 text-muted-foreground" />
           </div>
 
           <div className="flex-1 flex items-center justify-between">
-            <CardTitle className="text-lg">Question {index + 1}</CardTitle>
-
+            <div className="flex items-center gap-2">
+              <CardTitle className="text-lg">Question {index + 1}</CardTitle>
+              {hasError && isCollapsed && (
+                <span className="flex h-2 w-2 rounded-full bg-destructive" />
+              )}
+            </div>
             <div className="flex items-center gap-2">
               <Button
                 type="button"
                 variant="ghost"
                 size="icon"
                 onClick={() => onToggleCollapse(tempId)}
+                aria-label={
+                  isCollapsed ? "Expand question" : "Collapse question"
+                }
+                aria-expanded={!isCollapsed}
               >
                 {isCollapsed ? (
                   <ChevronDown className="h-4 w-4" />
@@ -76,6 +102,7 @@ export function QuestionCard({
                 size="icon"
                 onClick={() => onRemove(tempId)}
                 className="text-destructive hover:text-destructive"
+                aria-label={`Delete question ${index + 1}`}
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
@@ -105,6 +132,13 @@ export function QuestionCard({
                     className="resize-none"
                     rows={3}
                     {...field}
+                    ref={(e) => {
+                      field.ref(e);
+                      questionInputRef.current = e;
+                    }}
+                    aria-invalid={
+                      !!control._formState.errors.questions?.[index]?.text
+                    } // ADD THIS
                   />
                 </FormControl>
                 <FormMessage />
@@ -124,6 +158,9 @@ export function QuestionCard({
                     className="resize-none"
                     rows={3}
                     {...field}
+                    aria-invalid={
+                      !!control._formState.errors.questions?.[index]?.answer
+                    } // ADD THIS
                   />
                 </FormControl>
                 <FormMessage />

@@ -17,19 +17,6 @@ export interface QuizCreateDto {
   questions: Question[];
 }
 
-export interface QuestionCreateDto {
-  text: string;
-  answer: string;
-}
-
-export interface QuizWithQuestions extends Quiz {
-  questions: Question[];
-}
-
-// ============================================
-// Quiz Question Type
-// ============================================
-
 export interface QuizQuestion {
   id?: string;
   text: string;
@@ -55,7 +42,7 @@ export interface UseQuizFormReturn {
   form: UseFormReturn<QuizFormData>;
   availableQuestions: Question[];
   isLoadingQuestions: boolean;
-  questions: QuizQuestion[];
+  fields: QuizQuestion[];
   totalQuestions: number;
   isSubmitting: boolean;
   onSubmit: (data: QuizFormData) => Promise<void>;
@@ -75,4 +62,5 @@ export interface UseQuizFormReturn {
       questionToDelete: QuizQuestion | null;
     }>
   >;
+  lastAddedTempId: string | null;
 }

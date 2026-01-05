@@ -30,10 +30,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import { QuizQuestion, UseQuizFormReturn } from "@/lib/types";
+import { UseQuizFormReturn } from "@/lib/types";
 import { QuestionAutocomplete } from "./question-autocomplete";
 import { ReusableDialog } from "@/components/common/reusable-dialog";
 import { SortableQuestion } from "./sortable-question";
+import { getQuestionPreview } from "@/lib/utils";
 
 interface QuizFormProps {
   submitText: string;
@@ -46,7 +47,7 @@ export function QuizForm({ submitText, formData }: QuizFormProps) {
     form,
     availableQuestions,
     isLoadingQuestions,
-    questions,
+    fields,
     totalQuestions,
     isSubmitting,
     onSubmit,
@@ -58,6 +59,7 @@ export function QuizForm({ submitText, formData }: QuizFormProps) {
     reorderQuestions,
     deleteQuestionDialog,
     setDeleteQuestionDialog,
+    lastAddedTempId,
   } = formData;
 
   const sensors = useSensors(
@@ -71,18 +73,12 @@ export function QuizForm({ submitText, formData }: QuizFormProps) {
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
-      const oldIndex = questions.findIndex((q) => q.tempId === active.id);
-      const newIndex = questions.findIndex((q) => q.tempId === over.id);
+      const oldIndex = fields.findIndex((q) => q.tempId === active.id);
+      const newIndex = fields.findIndex((q) => q.tempId === over.id);
 
-      const newOrder = arrayMove(questions, oldIndex, newIndex);
+      const newOrder = arrayMove(fields, oldIndex, newIndex);
       reorderQuestions(newOrder);
     }
-  };
-
-  const getQuestionPreview = (question: QuizQuestion | null): string => {
-    if (!question) return "";
-    const text = question.text || "Empty question";
-    return text.length > 50 ? text.substring(0, 50) + "..." : text;
   };
 
   return (
@@ -163,7 +159,7 @@ export function QuizForm({ submitText, formData }: QuizFormProps) {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {questions.length === 0 ? (
+                {fields.length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
                     No questions added yet. Add a new question or recycle an
                     existing one.
@@ -175,11 +171,11 @@ export function QuizForm({ submitText, formData }: QuizFormProps) {
                     onDragEnd={handleDragEnd}
                   >
                     <SortableContext
-                      items={questions.map((q) => q.tempId)}
+                      items={fields.map((q) => q.tempId)}
                       strategy={verticalListSortingStrategy}
                     >
                       <div className="space-y-4">
-                        {questions.map((question, index) => (
+                        {fields.map((question, index) => (
                           <SortableQuestion
                             key={question.tempId}
                             question={question}
@@ -187,6 +183,7 @@ export function QuizForm({ submitText, formData }: QuizFormProps) {
                             control={form.control}
                             onRemove={removeQuestion}
                             onToggleCollapse={toggleCollapse}
+                            lastAddedTempId={lastAddedTempId}
                           />
                         ))}
                       </div>

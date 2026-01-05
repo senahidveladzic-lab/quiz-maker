@@ -11,6 +11,7 @@ interface SortableQuestionProps {
   control: UseQuizFormReturn["form"]["control"];
   onRemove: (tempId: string) => void;
   onToggleCollapse: (tempId: string) => void;
+  lastAddedTempId: string | null;
 }
 
 export function SortableQuestion({
@@ -19,6 +20,7 @@ export function SortableQuestion({
   control,
   onRemove,
   onToggleCollapse,
+  lastAddedTempId,
 }: SortableQuestionProps) {
   const {
     attributes,
@@ -47,6 +49,7 @@ export function SortableQuestion({
         tempId={question.tempId}
         questionText={question.text}
         dragHandleProps={{ ...attributes, ...listeners }}
+        isNew={question.tempId === lastAddedTempId}
       />
     </div>
   );

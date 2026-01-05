@@ -14,9 +14,16 @@ A Next.js application for creating and managing quizzes with question recycling 
 npm install
 ```
 
-### Running the Application
+## Running the Application
 
-You need to run **two terminals** simultaneously:
+### Option 1: Run everything with one command (recommended)
+```bash
+npm run dev:all
+```
+This starts both the JSON Server (API) and Next.js app.
+
+### Option 2: Run separately (advanced)
+If you prefer more control or are using a different backend:
 
 **Terminal 1 - Start the JSON Server (API):**
 ```bash

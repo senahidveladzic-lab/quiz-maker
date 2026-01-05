@@ -42,6 +42,8 @@ export function useEditQuizForm(quiz: Quiz): UseQuizFormReturn {
         q.id !== quiz.id && q.name.toLowerCase() === data.name.toLowerCase(),
     );
 
+    console.log("IS DUPLICATE", isDuplicate);
+
     if (isDuplicate) {
       form.setError("name", {
         type: "manual",
